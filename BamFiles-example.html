@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Jun Zhang">
+<title>1&nbsp; Bam files example – omicScope</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./RawCounts-example.html" rel="next">
+<link href="./Introduction.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-f1075ac1703e165f0c9b3df650605ffb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script defer="" data-domain="r4ds.hadley.nz" src="https://plausible.io/js/plausible.js"></script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./BamFiles-example.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bam files example</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">omicScope</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/junjunlab/omicScope" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./BamFiles-example.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bam files example</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./RawCounts-example.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Raw counts example</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./UCSCzena-example.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">UCSC xena example</span></span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1.1</span> Introduction</a></li>
+  <li><a href="#omicscope-object-construction" id="toc-omicscope-object-construction" class="nav-link" data-scroll-target="#omicscope-object-construction"><span class="header-section-number">1.2</span> Omicscope object construction</a></li>
+  <li><a href="#read-quantification-from-bam-files" id="toc-read-quantification-from-bam-files" class="nav-link" data-scroll-target="#read-quantification-from-bam-files"><span class="header-section-number">1.3</span> Read quantification from BAM files</a></li>
+  <li><a href="#raw-count-normalization" id="toc-raw-count-normalization" class="nav-link" data-scroll-target="#raw-count-normalization"><span class="header-section-number">1.4</span> Raw count normalization</a></li>
+  <li><a href="#dimensionality-reduction-and-clustering" id="toc-dimensionality-reduction-and-clustering" class="nav-link" data-scroll-target="#dimensionality-reduction-and-clustering"><span class="header-section-number">1.5</span> Dimensionality reduction and clustering</a></li>
+  <li><a href="#sample-correlation-analysis" id="toc-sample-correlation-analysis" class="nav-link" data-scroll-target="#sample-correlation-analysis"><span class="header-section-number">1.6</span> Sample correlation analysis</a></li>
+  <li><a href="#differential-expression-analysis" id="toc-differential-expression-analysis" class="nav-link" data-scroll-target="#differential-expression-analysis"><span class="header-section-number">1.7</span> Differential expression analysis</a></li>
+  <li><a href="#pathway-functional-enrichment-analysis" id="toc-pathway-functional-enrichment-analysis" class="nav-link" data-scroll-target="#pathway-functional-enrichment-analysis"><span class="header-section-number">1.8</span> Pathway functional enrichment analysis</a></li>
+  <li>
+<a href="#pathway-and-transcription-factor-activity-inference" id="toc-pathway-and-transcription-factor-activity-inference" class="nav-link" data-scroll-target="#pathway-and-transcription-factor-activity-inference"><span class="header-section-number">1.9</span> Pathway and transcription factor activity inference</a>
+  <ul class="collapse">
+<li><a href="#pathway-activity-inference" id="toc-pathway-activity-inference" class="nav-link" data-scroll-target="#pathway-activity-inference"><span class="header-section-number">1.9.1</span> Pathway activity inference</a></li>
+  <li><a href="#transcription-factor-activity-inference" id="toc-transcription-factor-activity-inference" class="nav-link" data-scroll-target="#transcription-factor-activity-inference"><span class="header-section-number">1.9.2</span> Transcription factor activity inference</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/junjunlab/omicScope/edit/main/BamFiles-example.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/junjunlab/omicScope/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">
+<span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bam files example</span>
+</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="introduction" class="level2" data-number="1.1"><h2 data-number="1.1" class="anchored" data-anchor-id="introduction">
+<span class="header-section-number">1.1</span> Introduction</h2>
+<p>RNA-seq upstream analysis involves removing adapter sequences from FASTQ files, aligning reads to the reference genome, and quantifying gene expression using <strong>HTSeq</strong> or <strong>featureCounts</strong> to obtain raw read counts. <strong>omicScope</strong> directly accepts aligned BAM files as input and provides the <strong>count_data()</strong> function to perform quantification analysis on constructed <strong>omicscope</strong> objects. The generated count matrix is stored within the omicscope object, enabling subsequent downstream analyses.</p>
+</section><section id="omicscope-object-construction" class="level2" data-number="1.2"><h2 data-number="1.2" class="anchored" data-anchor-id="omicscope-object-construction">
+<span class="header-section-number">1.2</span> Omicscope object construction</h2>
+<p>In the following example, we will construct an omicscope object using pre-aligned BAM files as input. In addition to the BAM files, sample metadata containing grouping information is required:</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># bam test</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment">SummarizedExperiment</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">omicScope</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">bams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"../test-bam/"</span>,pattern <span class="op">=</span> <span class="st">"*.bam$"</span><span class="op">)</span></span>
+<span><span class="va">bams</span></span>
+<span><span class="co"># [1] "0a.bam"         "0a.sorted.bam"  "0b.bam"         "0b.sorted.bam"  "10a.bam"        "10a.sorted.bam" "10b.bam"       </span></span>
+<span><span class="co"># [8] "10b.sorted.bam" "4a.bam"         "4a.sorted.bam"  "4b.bam"         "4b.sorted.bam" </span></span>
+<span></span>
+<span><span class="va">bams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,<span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
+<span>          <span class="st">"../test-bam/4a.sorted.bam"</span>,<span class="st">"../test-bam/4b.sorted.bam"</span>,</span>
+<span>          <span class="st">"../test-bam/10a.sorted.bam"</span>,<span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">mta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">bams</span>,</span>
+<span>                  sample_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"day0-rep1"</span>,<span class="st">"day0-rep2"</span>,<span class="st">"day4-rep1"</span>,<span class="st">"day4-rep2"</span>,</span>
+<span>                                  <span class="st">"day10-rep1"</span>,<span class="st">"day10-rep2"</span><span class="op">)</span>,</span>
+<span>                  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"day0"</span>,<span class="st">"day4"</span>,<span class="st">"day10"</span><span class="op">)</span>,each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">mta</span></span>
+<span><span class="co">#                       sample sample_name group</span></span>
+<span><span class="co"># 1  ../test-bam/0a.sorted.bam   day0-rep1  day0</span></span>
+<span><span class="co"># 2  ../test-bam/0b.sorted.bam   day0-rep2  day0</span></span>
+<span><span class="co"># 3  ../test-bam/4a.sorted.bam   day4-rep1  day4</span></span>
+<span><span class="co"># 4  ../test-bam/4b.sorted.bam   day4-rep2  day4</span></span>
+<span><span class="co"># 5 ../test-bam/10a.sorted.bam  day10-rep1 day10</span></span>
+<span><span class="co"># 6 ../test-bam/10b.sorted.bam  day10-rep2 day10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We construct the omicscope object using the <code><a href="https://rdrr.io/pkg/omicScope/man/omicscope.html">omicscope()</a></code> function. The created object inherits from the <strong>SummarizedExperiment</strong> class, allowing users to access feature metadata and sample information using standard accessor functions like <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">rowData()</a></code> and <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData()</a></code>, respectively:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/omicscope.html">omicscope</a></span><span class="op">(</span>gtfAnno <span class="op">=</span> <span class="st">"../test-bam/Mus_musculus.GRCm38.102.gtf.gz"</span>,</span>
+<span>                bamFile <span class="op">=</span> <span class="va">bams</span>,</span>
+<span>                metadata <span class="op">=</span> <span class="va">mta</span><span class="op">)</span></span>
+<span><span class="va">os</span></span>
+<span><span class="co"># class: omicscope </span></span>
+<span><span class="co"># dim: 55487 6 </span></span>
+<span><span class="co"># metadata(0):</span></span>
+<span><span class="co">#     assays(0):</span></span>
+<span><span class="co">#     rownames(55487): ENSMUSG00000102693 ENSMUSG00000064842 ... ENSMUSG00000096730 ENSMUSG00000095742</span></span>
+<span><span class="co"># rowData names(3): gene_id gene_name gene_biotype</span></span>
+<span><span class="co"># colnames(6): ../test-bam/0a.sorted.bam ../test-bam/0b.sorted.bam ... ../test-bam/10a.sorted.bam ../test-bam/10b.sorted.bam</span></span>
+<span><span class="co"># colData names(3): sample sample_name group</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">rowData</a></span><span class="op">(</span><span class="va">os</span><span class="op">)</span></span>
+<span><span class="co"># DataFrame with 55487 rows and 3 columns</span></span>
+<span><span class="co">#                               gene_id      gene_name         gene_biotype</span></span>
+<span><span class="co">#                           &lt;character&gt;    &lt;character&gt;          &lt;character&gt;</span></span>
+<span><span class="co"># ENSMUSG00000102693 ENSMUSG00000102693  4933401J01Rik                  TEC</span></span>
+<span><span class="co"># ENSMUSG00000064842 ENSMUSG00000064842        Gm26206                snRNA</span></span>
+<span><span class="co"># ENSMUSG00000051951 ENSMUSG00000051951           Xkr4       protein_coding</span></span>
+<span><span class="co"># ENSMUSG00000102851 ENSMUSG00000102851        Gm18956 processed_pseudogene</span></span>
+<span><span class="co"># ENSMUSG00000103377 ENSMUSG00000103377        Gm37180                  TEC</span></span>
+<span><span class="co"># ...                               ...            ...                  ...</span></span>
+<span><span class="co"># ENSMUSG00000094431 ENSMUSG00000094431 CAAA01205117.1                miRNA</span></span>
+<span><span class="co"># ENSMUSG00000094621 ENSMUSG00000094621 CAAA01098150.1                miRNA</span></span>
+<span><span class="co"># ENSMUSG00000098647 ENSMUSG00000098647 CAAA01064564.1                miRNA</span></span>
+<span><span class="co"># ENSMUSG00000096730 ENSMUSG00000096730       Vmn2r122       protein_coding</span></span>
+<span><span class="co"># ENSMUSG00000095742 ENSMUSG00000095742 CAAA01147332.1       protein_coding</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span><span class="op">(</span><span class="va">os</span><span class="op">)</span></span>
+<span><span class="co"># DataFrame with 6 rows and 3 columns</span></span>
+<span><span class="co">#                                            sample sample_name       group</span></span>
+<span><span class="co">#                                       &lt;character&gt; &lt;character&gt; &lt;character&gt;</span></span>
+<span><span class="co"># ../test-bam/0a.sorted.bam  ../test-bam/0a.sorte..   day0-rep1        day0</span></span>
+<span><span class="co"># ../test-bam/0b.sorted.bam  ../test-bam/0b.sorte..   day0-rep2        day0</span></span>
+<span><span class="co"># ../test-bam/4a.sorted.bam  ../test-bam/4a.sorte..   day4-rep1        day4</span></span>
+<span><span class="co"># ../test-bam/4b.sorted.bam  ../test-bam/4b.sorte..   day4-rep2        day4</span></span>
+<span><span class="co"># ../test-bam/10a.sorted.bam ../test-bam/10a.sort..  day10-rep1       day10</span></span>
+<span><span class="co"># ../test-bam/10b.sorted.bam ../test-bam/10b.sort..  day10-rep2       day10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="read-quantification-from-bam-files" class="level2" data-number="1.3"><h2 data-number="1.3" class="anchored" data-anchor-id="read-quantification-from-bam-files">
+<span class="header-section-number">1.3</span> Read quantification from BAM files</h2>
+<p>Read quantification can be performed using the&nbsp;<code><a href="https://rdrr.io/pkg/omicScope/man/count_data.html">count_data()</a></code>&nbsp;function, which internally calls&nbsp;<code>featureCounts()</code>&nbsp;from the <strong>Rsubread</strong> package to process BAM files. The generated count matrix is stored in the <strong>omicscope</strong> object for downstream analysis:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/count_data.html">count_data</a></span><span class="op">(</span><span class="va">os</span>, nThreads <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
+<span><span class="co">#         ==========     _____ _    _ ____  _____  ______          _____  </span></span>
+<span><span class="co">#         =====         / ____| |  | |  _ \|  __ \|  ____|   /\   |  __ \ </span></span>
+<span><span class="co">#           =====      | (___ | |  | | |_) | |__) | |__     /  \  | |  | |</span></span>
+<span><span class="co">#             ====      \___ \| |  | |  _ &lt;|  _  /|  __|   / /\ \ | |  | |</span></span>
+<span><span class="co">#               ====    ____) | |__| | |_) | | \ \| |____ / ____ \| |__| |</span></span>
+<span><span class="co">#         ==========   |_____/ \____/|____/|_|  \_\______/_/    \_\_____/</span></span>
+<span><span class="co">#        Rsubread 2.22.1</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># //========================== featureCounts setting ===========================\\</span></span>
+<span><span class="co"># ||                                                                            ||</span></span>
+<span><span class="co"># ||             Input files : 6 BAM files                                      ||</span></span>
+<span><span class="co"># ||                                                                            ||</span></span>
+<span><span class="co"># ||                           0a.sorted.bam                                    ||</span></span>
+<span><span class="co"># ||                           0b.sorted.bam                                    ||</span></span>
+<span><span class="co"># ||                           4a.sorted.bam                                    ||</span></span>
+<span><span class="co"># ||                           4b.sorted.bam                                    ||</span></span>
+<span><span class="co"># ||                           10a.sorted.bam                                   ||</span></span>
+<span><span class="co"># ||                           10b.sorted.bam                                   ||</span></span>
+<span><span class="co"># ||                                                                            ||</span></span>
+<span><span class="co"># ||              Paired-end : yes                                              ||</span></span>
+<span><span class="co"># ||        Count read pairs : yes                                              ||</span></span>
+<span><span class="co"># ||              Annotation : Mus_musculus.GRCm38.102.gtf.gz (GTF)             ||</span></span>
+<span><span class="co"># ||      Dir for temp files : .                                                ||</span></span>
+<span><span class="co"># ||                 Threads : 12                                               ||</span></span>
+<span><span class="co"># ||                   Level : meta-feature level                               ||</span></span>
+<span><span class="co"># ||      Multimapping reads : counted                                          ||</span></span>
+<span><span class="co"># || Multi-overlapping reads : not counted                                      ||</span></span>
+<span><span class="co"># ||   Min overlapping bases : 1                                                ||</span></span>
+<span><span class="co"># ||                                                                            ||</span></span>
+<span><span class="co"># \\============================================================================//</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># //================================= Running ==================================\\</span></span>
+<span><span class="co"># ||                                                                            ||</span></span>
+<span><span class="co"># || Load annotation file Mus_musculus.GRCm38.102.gtf.gz ...                    ||</span></span>
+<span><span class="co"># ||    Features : 843712                                                       ||</span></span>
+<span><span class="co"># ||    Meta-features : 55487                                                   ||</span></span>
+<span><span class="co"># ||    Chromosomes/contigs : 45                                                ||</span></span>
+<span><span class="co"># ||                                                                            ||</span></span>
+<span><span class="co"># || Process BAM file 0a.sorted.bam...                                          ||</span></span>
+<span><span class="co"># ||    Paired-end reads are included.                                          ||</span></span>
+<span><span class="co"># ||    Total alignments : 41866848                                             ||</span></span>
+<span><span class="co"># ||    Successfully assigned alignments : 21829320 (52.1%)                     ||</span></span>
+<span><span class="co"># ||    Running time : 0.80 minutes                                             ||</span></span>
+<span><span class="co"># ||                                                                            ||</span></span>
+<span><span class="co"># || Process BAM file 0b.sorted.bam...                                          ||</span></span>
+<span><span class="co"># ||    Paired-end reads are included.                                          ||</span></span>
+<span><span class="co"># ||    Total alignments : 43090084                                             ||</span></span>
+<span><span class="co"># ||    Successfully assigned alignments : 21581339 (50.1%)                     ||</span></span>
+<span><span class="co"># ||    Running time : 0.95 minutes                                             ||</span></span>
+<span><span class="co"># ||                                                                            ||</span></span>
+<span><span class="co"># || Process BAM file 4a.sorted.bam...                                          ||</span></span>
+<span><span class="co"># ||    Paired-end reads are included.                                          ||</span></span>
+<span><span class="co"># ||    Total alignments : 38381228                                             ||</span></span>
+<span><span class="co"># ||    Successfully assigned alignments : 20113520 (52.4%)                     ||</span></span>
+<span><span class="co"># ||    Running time : 0.70 minutes                                             ||</span></span>
+<span><span class="co"># ||                                                                            ||</span></span>
+<span><span class="co"># || Process BAM file 4b.sorted.bam...                                          ||</span></span>
+<span><span class="co"># ||    Paired-end reads are included.                                          ||</span></span>
+<span><span class="co"># ||    Total alignments : 39379217                                             ||</span></span>
+<span><span class="co"># ||    Successfully assigned alignments : 20351678 (51.7%)                     ||</span></span>
+<span><span class="co"># ||    Running time : 0.73 minutes                                             ||</span></span>
+<span><span class="co"># ||                                                                            ||</span></span>
+<span><span class="co"># || Process BAM file 10a.sorted.bam...                                         ||</span></span>
+<span><span class="co"># ||    Paired-end reads are included.                                          ||</span></span>
+<span><span class="co"># ||    Total alignments : 40463564                                             ||</span></span>
+<span><span class="co"># ||    Successfully assigned alignments : 21379392 (52.8%)                     ||</span></span>
+<span><span class="co"># ||    Running time : 0.71 minutes                                             ||</span></span>
+<span><span class="co"># ||                                                                            ||</span></span>
+<span><span class="co"># || Process BAM file 10b.sorted.bam...                                         ||</span></span>
+<span><span class="co"># ||    Paired-end reads are included.                                          ||</span></span>
+<span><span class="co"># ||    Total alignments : 40481313                                             ||</span></span>
+<span><span class="co"># ||    Successfully assigned alignments : 19923083 (49.2%)                     ||</span></span>
+<span><span class="co"># ||    Running time : 0.69 minutes                                             ||</span></span>
+<span><span class="co"># ||                                                                            ||</span></span>
+<span><span class="co"># || Write the final count table.                                               ||</span></span>
+<span><span class="co"># || Write the read assignment summary.                                         ||</span></span>
+<span><span class="co"># ||                                                                            ||</span></span>
+<span><span class="co"># \\============================================================================//</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Accessing count data</strong></p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assay</a></span><span class="op">(</span><span class="va">os</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="op">]</span></span>
+<span><span class="co"># 3 x 6 sparse Matrix of class "dgCMatrix"</span></span>
+<span><span class="co">#                    ../test-bam/0a.sorted.bam ../test-bam/0b.sorted.bam ../test-bam/4a.sorted.bam ../test-bam/4b.sorted.bam</span></span>
+<span><span class="co"># ENSMUSG00000102693                         .                         1                         .                         .</span></span>
+<span><span class="co"># ENSMUSG00000064842                         .                         .                         .                         .</span></span>
+<span><span class="co"># ENSMUSG00000051951                        13                        16                       109                       147</span></span>
+<span><span class="co">#                    ../test-bam/10a.sorted.bam ../test-bam/10b.sorted.bam</span></span>
+<span><span class="co"># ENSMUSG00000102693                          .                          .</span></span>
+<span><span class="co"># ENSMUSG00000064842                          .                          .</span></span>
+<span><span class="co"># ENSMUSG00000051951                         65                        105</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="raw-count-normalization" class="level2" data-number="1.4"><h2 data-number="1.4" class="anchored" data-anchor-id="raw-count-normalization">
+<span class="header-section-number">1.4</span> Raw count normalization</h2>
+<p>Raw count data can be normalized using the <code><a href="https://rdrr.io/pkg/omicScope/man/normalize_data.html">normalize_data()</a></code> function, which supports several normalization methods: <strong>TPM</strong> (Transcripts Per Million), <strong>RPKM</strong> (Reads Per Kilobase Million), <strong>CPM</strong> (Counts Per Million), and <strong>log1p</strong> transformation:</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/normalize_data.html">normalize_data</a></span><span class="op">(</span><span class="va">os</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assayNames</a></span><span class="op">(</span><span class="va">os</span><span class="op">)</span></span>
+<span><span class="co"># [1] "counts"        "normed_counts"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assay</a></span><span class="op">(</span><span class="va">os</span>,<span class="st">"normed_counts"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
+<span><span class="co"># 3 x 3 sparse Matrix of class "dgCMatrix"</span></span>
+<span><span class="co">#                    ../test-bam/0a.sorted.bam ../test-bam/0b.sorted.bam ../test-bam/4a.sorted.bam</span></span>
+<span><span class="co"># ENSMUSG00000102693                 .                         0.1160302                  .       </span></span>
+<span><span class="co"># ENSMUSG00000064842                 .                         .                          .       </span></span>
+<span><span class="co"># ENSMUSG00000051951                 0.2632322                 0.3259661                  2.614308</span></span>
+<span></span>
+<span><span class="co"># cpm normalization</span></span>
+<span><span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/normalize_data.html">normalize_data</a></span><span class="op">(</span><span class="va">os</span>, norm_type <span class="op">=</span> <span class="st">"cpm"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assay</a></span><span class="op">(</span><span class="va">os</span>,<span class="st">"normed_counts"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
+<span><span class="co"># 3 x 3 sparse Matrix of class "dgCMatrix"</span></span>
+<span><span class="co">#                    ../test-bam/0a.sorted.bam ../test-bam/0b.sorted.bam ../test-bam/4a.sorted.bam</span></span>
+<span><span class="co"># ENSMUSG00000102693               .                        0.0004633633                 .        </span></span>
+<span><span class="co"># ENSMUSG00000064842               .                        .                            .        </span></span>
+<span><span class="co"># ENSMUSG00000051951               0.005955293              0.0074138125                 0.0541924</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="dimensionality-reduction-and-clustering" class="level2" data-number="1.5"><h2 data-number="1.5" class="anchored" data-anchor-id="dimensionality-reduction-and-clustering">
+<span class="header-section-number">1.5</span> Dimensionality reduction and clustering</h2>
+<p>Principal Component Analysis (PCA) is routinely employed in RNA-seq quality control workflows to identify potential outlier samples. The&nbsp;<code><a href="https://rdrr.io/pkg/omicScope/man/run_reduction.html">run_reduction()</a></code>&nbsp;function implements three dimensionality reduction approaches (PCA, UMAP, and t-SNE) for exploring and visualizing the relationships between samples:</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/run_reduction.html">run_reduction</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">os</span>, reduction <span class="op">=</span> <span class="st">"pca"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/dim_plot.html">dim_plot</a></span><span class="op">(</span><span class="va">os</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/esc-pca.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="350"></p>
+</figure>
+</div>
+</section><section id="sample-correlation-analysis" class="level2" data-number="1.6"><h2 data-number="1.6" class="anchored" data-anchor-id="sample-correlation-analysis">
+<span class="header-section-number">1.6</span> Sample correlation analysis</h2>
+<p>In&nbsp;addition&nbsp;to&nbsp;dimensionality&nbsp;reduction&nbsp;approaches&nbsp;such&nbsp;as&nbsp;PCA&nbsp;and&nbsp;UMAP&nbsp;for&nbsp;exploring&nbsp;sample&nbsp;relationships,&nbsp;correlation&nbsp;analysis&nbsp;provides&nbsp;another&nbsp;perspective&nbsp;on&nbsp;inter-sample&nbsp;associations.&nbsp;The&nbsp;<code>correlation_plot</code>&nbsp;function&nbsp;performs&nbsp;correlation&nbsp;analysis&nbsp;and&nbsp;produces&nbsp;a&nbsp;correlation&nbsp;heatmap:</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/get_normalized_data.html">get_normalized_data</a></span><span class="op">(</span><span class="va">os</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/correlation_plot.html">correlation_plot</a></span><span class="op">(</span><span class="va">os</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/sample-cor.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500"></p>
+</figure>
+</div>
+<p>When sample names are specified for both x and y parameters, the function generates a correlation scatter plot:</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/correlation_plot.html">correlation_plot</a></span><span class="op">(</span><span class="va">os</span>,</span>
+<span>                       x <span class="op">=</span> <span class="st">"day0-rep1"</span>,y <span class="op">=</span> <span class="st">"day0-rep2"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/correlation_plot.html">correlation_plot</a></span><span class="op">(</span><span class="va">os</span>,</span>
+<span>                       x <span class="op">=</span> <span class="st">"day10-rep1"</span>,y <span class="op">=</span> <span class="st">"day10-rep2"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/scatter-cor.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section><section id="differential-expression-analysis" class="level2" data-number="1.7"><h2 data-number="1.7" class="anchored" data-anchor-id="differential-expression-analysis">
+<span class="header-section-number">1.7</span> Differential expression analysis</h2>
+<p>To identify genes with differential expression patterns across various treatment conditions or sample groups, the <code><a href="https://rdrr.io/pkg/omicScope/man/differential_expression.html">differential_expression()</a></code> function provides integrated support for three leading statistical methods: <strong>DESeq2</strong>, <strong>limma</strong>, and <strong>edgeR</strong>. This flexibility allows users to select the analytical approach that best suits their experimental design and data characteristics.</p>
+<p>In the following analysis, we compare gene expression between day 10 and day 0 samples (with day 10 as the treatment group and day 0 as the control) using the <strong>DESeq2</strong> method:</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/differential_expression.html">differential_expression</a></span><span class="op">(</span><span class="va">os</span>,</span>
+<span>                              method <span class="op">=</span> <span class="st">"deseq2"</span>,</span>
+<span>                              selectedSample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"day0-rep1"</span>,<span class="st">"day0-rep2"</span>,</span>
+<span>                                                 <span class="st">"day10-rep1"</span>,<span class="st">"day10-rep2"</span><span class="op">)</span>,</span>
+<span>                              deseq2Contrast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'group'</span>, <span class="st">'day10'</span>, <span class="st">'day0'</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Differential expression analysis results are stored within the&nbsp;<code>diffExpData</code>&nbsp;slot of the omicscope object. The results are organized as a&nbsp;<code>diffdata</code>&nbsp;S4 object containing the following components: <strong>contrast name</strong>, <strong>statistical method</strong> used, <strong>numbers</strong> of significantly up- and down-regulated genes, user-defined <strong>thresholds</strong> for <strong>log2FoldChange</strong> and <strong>p-value</strong>, and a detailed data frame with complete differential expression statistics:</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">os</span><span class="op">@</span><span class="va">diffExpData</span><span class="op">$</span><span class="va">deseq2</span><span class="op">$</span><span class="va">treat_vs_control</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span><span class="co"># Formal class 'diffdata' [package "omicScope"] with 9 slots</span></span>
+<span><span class="co">#   ..@ contrastName   : chr "treat_vs_control"</span></span>
+<span><span class="co">#   ..@ method         : chr "deseq2"</span></span>
+<span><span class="co">#   ..@ design         :List of 1</span></span>
+<span><span class="co">#   .. ..$ :Class 'formula'  language ~group</span></span>
+<span><span class="co">#   .. .. .. ..- attr(*, ".Environment")=&lt;environment: 0x0000018b47022928&gt; </span></span>
+<span><span class="co">#   ..@ log2FCthreshold: num 1</span></span>
+<span><span class="co">#   ..@ pvalueThreshold: num 0.05</span></span>
+<span><span class="co">#   ..@ sigUp          : int 6281</span></span>
+<span><span class="co">#   ..@ sigDown        : int 5352</span></span>
+<span><span class="co">#   ..@ nonSig         : int 27096</span></span>
+<span><span class="co">#   ..@ data           :'data.frame':   38729 obs. of  10 variables:</span></span>
+<span><span class="co">#   .. ..$ gene_id       : chr [1:38729] "ENSMUSG00000000001" "ENSMUSG00000000028" "ENSMUSG00000000031" "ENSMUSG00000000037" ...</span></span>
+<span><span class="co">#   .. ..$ baseMean      : num [1:38729] 3613.15 1001.61 14141.49 792.04 1.38 ...</span></span>
+<span><span class="co">#   .. ..$ log2FoldChange: num [1:38729] 0.559 -1.608 8.344 -3.364 3.798 ...</span></span>
+<span><span class="co">#   .. ..$ lfcSE         : num [1:38729] 0.18 0.181 0.212 0.208 3.23 ...</span></span>
+<span><span class="co">#   .. ..$ stat          : num [1:38729] 3.1 -8.9 39.27 -16.2 1.18 ...</span></span>
+<span><span class="co">#   .. ..$ pvalue        : num [1:38729] 1.92e-03 5.69e-19 0.00 4.87e-59 2.40e-01 ...</span></span>
+<span><span class="co">#   .. ..$ padj          : num [1:38729] 5.35e-03 7.43e-18 0.00 3.31e-57 NA ...</span></span>
+<span><span class="co">#   .. ..$ gene_name     : chr [1:38729] "Gnai3" "Cdc45" "H19" "Scml2" ...</span></span>
+<span><span class="co">#   .. ..$ gene_biotype  : chr [1:38729] "protein_coding" "protein_coding" "lincRNA" "protein_coding" ...</span></span>
+<span><span class="co">#   .. ..$ type          : chr [1:38729] "nonSig" "sigDown" "sigUp" "sigDown" ...</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">@</span><span class="va">data</span><span class="op">)</span></span>
+<span><span class="co">#              gene_id     baseMean log2FoldChange     lfcSE       stat       pvalue         padj gene_name   gene_biotype    type</span></span>
+<span><span class="co"># 1 ENSMUSG00000000001  3613.151868      0.5587918 0.1800792   3.103033 1.915484e-03 5.347565e-03     Gnai3 protein_coding  nonSig</span></span>
+<span><span class="co"># 2 ENSMUSG00000000028  1001.607495     -1.6083184 0.1807529  -8.897882 5.692256e-19 7.428221e-18     Cdc45 protein_coding sigDown</span></span>
+<span><span class="co"># 3 ENSMUSG00000000031 14141.492563      8.3442336 0.2124597  39.274424 0.000000e+00 0.000000e+00       H19        lincRNA   sigUp</span></span>
+<span><span class="co"># 4 ENSMUSG00000000037   792.043426     -3.3640508 0.2076300 -16.202139 4.870343e-59 3.306090e-57     Scml2 protein_coding sigDown</span></span>
+<span><span class="co"># 5 ENSMUSG00000000049     1.379006      3.7979399 3.2298910   1.175872 2.396458e-01           NA      Apoh protein_coding  nonSig</span></span>
+<span><span class="co"># 6 ENSMUSG00000000056   927.514232      1.5135494 0.2393950   6.322392 2.575447e-10 1.749060e-09      Narf protein_coding   sigUp</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To visualize the differential expression results, we use the <code><a href="https://rdrr.io/pkg/omicScope/man/volcano_plot.html">volcano_plot()</a></code> function, which generates a volcano plot displaying log2FoldChange versus statistical significance:</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/volcano_plot.html">volcano_plot</a></span><span class="op">(</span><span class="va">os</span>, </span>
+<span>             method <span class="op">=</span> <span class="st">"deseq2"</span>,</span>
+<span>             gene_number_label_pos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.95</span>,<span class="fl">0.02</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/esc-vc.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="590"></p>
+</figure>
+</div>
+</section><section id="pathway-functional-enrichment-analysis" class="level2" data-number="1.8"><h2 data-number="1.8" class="anchored" data-anchor-id="pathway-functional-enrichment-analysis">
+<span class="header-section-number">1.8</span> Pathway functional enrichment analysis</h2>
+<p>The&nbsp;<code><a href="https://rdrr.io/pkg/omicScope/man/run_enrichment.html">run_enrichment()</a></code>&nbsp;function performs pathway enrichment analysis separately on up- and down-regulated genes from stored differential expression results. Supported methods include “go”, “gsea_go”, “kegg”, and “gsea_kegg”, with results automatically stored in the&nbsp;<code>enrichmentData</code>&nbsp;slot:</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yulab-smu.top/contribution-knowledge-mining/">clusterProfiler</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">org.Mm.eg.db</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/run_enrichment.html">run_enrichment</a></span><span class="op">(</span><span class="va">os</span>,</span>
+<span>                     enrich_type <span class="op">=</span> <span class="st">"go"</span>,</span>
+<span>                     OrgDb <span class="op">=</span> <span class="va">org.Mm.eg.db</span>,</span>
+<span>                     pvalueCutoff  <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span><span class="co"># Start for method of deseq2 and contrast for treat_vs_control enrichment analysis...</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="va">enrich.res</span> <span class="op">&lt;-</span> <span class="va">os</span><span class="op">@</span><span class="va">enrichmentData</span><span class="op">$</span><span class="va">GO</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">enrich.res</span><span class="op">)</span></span>
+<span><span class="co"># Formal class 'SimpleList' [package "S4Vectors"] with 4 slots</span></span>
+<span><span class="co">#   ..@ listData       :List of 2</span></span>
+<span><span class="co">#   .. ..$ deseq2|treat_vs_control|go|sigUp  :Formal class 'enrichResult' [package "DOSE"] with 15 slots</span></span>
+<span><span class="co">#   .. .. .. ..@ result       :'data.frame':    4009 obs. of  13 variables:</span></span>
+<span><span class="co">#   .. .. .. .. ..$ ONTOLOGY      : chr [1:4009] "BP" "BP" "BP" "BP" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ ID            : chr [1:4009] "GO:0030198" "GO:0045229" "GO:0043062" "GO:0042060" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ Description   : chr [1:4009] "extracellular matrix organization" "external encapsulating structure organization" "extracellular structure organization" "wound healing" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GeneRatio     : chr [1:4009] "199/4736" "199/4736" "199/4736" "196/4736" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ BgRatio       : chr [1:4009] "337/28832" "338/28832" "339/28832" "403/28832" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ RichFactor    : num [1:4009] 0.591 0.589 0.587 0.486 0.472 ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ FoldEnrichment: num [1:4009] 3.59 3.58 3.57 2.96 2.87 ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ zScore        : num [1:4009] 21.2 21.2 21.1 17.6 16.6 ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ pvalue        : num [1:4009] 5.40e-71 1.11e-70 2.25e-70 1.33e-51 2.40e-46 ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ p.adjust      : num [1:4009] 3.37e-67 3.45e-67 4.69e-67 2.07e-48 2.99e-43 ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ qvalue        : num [1:4009] 1.50e-67 1.54e-67 2.09e-67 9.23e-49 1.33e-43 ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ geneID        : chr [1:4009] "Postn/Col3a1/Smoc2/Nepn/Ctss/Pparg/Col1a1/Ccdc80/Col6a1/Lox/Col4a6/Adamts18/Col16a1/Col1a2/Foxf1/Adamts12/Col4a"| __truncated__ "Postn/Col3a1/Smoc2/Nepn/Ctss/Pparg/Col1a1/Ccdc80/Col6a1/Lox/Col4a6/Adamts18/Col16a1/Col1a2/Foxf1/Adamts12/Col4a"| __truncated__ "Postn/Col3a1/Smoc2/Nepn/Ctss/Pparg/Col1a1/Ccdc80/Col6a1/Lox/Col4a6/Adamts18/Col16a1/Col1a2/Foxf1/Adamts12/Col4a"| __truncated__ "F13a1/Plek/Col3a1/Smoc2/Bnc1/Svep1/Pparg/Pf4/Lilrb4a/Fgb/Tlr4/Ccl2/Itgb6/Nrp1/C1qtnf1/Muc16/Adamts18/Kng2/Mmrn1"| __truncated__ ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ Count         : int [1:4009] 199 199 199 196 185 167 212 154 173 201 ...</span></span>
+<span><span class="co">#   .. .. .. ..@ pvalueCutoff : num 0.05</span></span>
+<span><span class="co">#   .. .. .. ..@ pAdjustMethod: chr "BH"</span></span>
+<span><span class="co">#   .. .. .. ..@ qvalueCutoff : num 0.2</span></span>
+<span><span class="co">#   .. .. .. ..@ organism     : chr "Mus musculus"</span></span>
+<span><span class="co">#   .. .. .. ..@ ontology     : chr "GOALL"</span></span>
+<span><span class="co">#   .. .. .. ..@ gene         : chr [1:5283] "17022" "102636514" "11576" "74145" ...</span></span>
+<span><span class="co">#   .. .. .. ..@ keytype      : chr "ENTREZID"</span></span>
+<span><span class="co">#   .. .. .. ..@ universe     : chr [1:28832] "11545" "12628" "13804" "16882" ...</span></span>
+<span><span class="co">#   .. .. .. ..@ gene2Symbol  : Named chr [1:5283] "Lum" "Hand2os1" "Afp" "F13a1" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..- attr(*, "names")= chr [1:5283] "17022" "102636514" "11576" "74145" ...</span></span>
+<span><span class="co">#   .. .. .. ..@ geneSets     :List of 15714</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000002: chr [1:37] "11545" "12628" "13804" "16882" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000018: chr [1:141] "11350" "11461" "11545" "12053" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000023: chr "232714"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000025: chr "232714"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000038: chr [1:34] "11430" "11666" "12686" "14081" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000041: chr [1:110] "11306" "11776" "11927" "11977" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000045: chr [1:128] "11781" "11793" "11938" "12421" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000050: chr [1:11] "11846" "11847" "11898" "12606" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000052: chr [1:7] "11898" "15194" "18416" "56454" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000070: chr [1:189] "11789" "11799" "11848" "11920" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000075: chr [1:205] "11789" "11799" "11909" "11920" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000077: chr [1:121] "11909" "11920" "12021" "12144" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000079: chr [1:45] "11491" "11651" "11789" "11819" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000082: chr [1:223] "11461" "11477" "11479" "11491" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000086: chr [1:144] "11799" "11820" "11920" "12021" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000096: chr [1:32] "11611" "11720" "12116" "12286" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000097: chr [1:16] "12116" "12411" "14598" "17769" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000098: chr [1:7] "11611" "11720" "12411" "12583" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000101: chr [1:13] "17254" "18023" "20510" "20511" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000103: chr [1:4] "23971" "23972" "53315" "54200"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000105: chr [1:2] "108156" "665563"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000122: chr [1:984] "11481" "11545" "11568" "11569" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000132: chr [1:38] "12615" "13191" "13589" "14165" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000154: chr [1:32] "14113" "14791" "15278" "52530" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000165: chr [1:850] "11350" "11352" "11441" "11450" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000183: chr [1:9] "18676" "20937" "64383" "93759" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000184: chr [1:48] "11810" "14852" "14853" "15384" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000209: chr [1:272] "11796" "11797" "11798" "12005" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000212: chr [1:25] "12316" "12442" "13194" "17451" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000226: chr [1:688] "11350" "11603" "11735" "11789" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000245: chr [1:50] "13046" "14007" "14105" "19655" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000266: chr [1:52] "11774" "12176" "13179" "14245" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000271: chr [1:67] "11364" "11651" "11652" "11771" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000272: chr [1:40] "11548" "11554" "12421" "12655" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000278: chr [1:894] "11350" "11461" "11477" "11479" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000280: chr [1:466] "11789" "11799" "11848" "11920" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000281: chr [1:93] "11735" "11789" "11799" "11840" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000288: chr [1:52] "11991" "12192" "12193" "12227" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000289: chr [1:26] "12227" "17350" "18458" "18983" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000302: chr [1:226] "11350" "11502" "11517" "11545" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000303: chr [1:26] "11545" "11808" "11977" "12460" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000304: chr "14360"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000305: chr [1:27] "11545" "11808" "11977" "12460" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000375: chr [1:315] "11758" "11834" "12261" "12696" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000377: chr [1:315] "11758" "11834" "12261" "12696" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000380: chr [1:84] "13046" "13207" "13211" "13548" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000381: chr [1:63] "13046" "13207" "13548" "13992" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000394: chr [1:11] "28088" "66078" "66637" "67106" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000395: chr [1:6] "20630" "101739" "110809" "231769" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000398: chr [1:315] "11758" "11834" "12261" "12696" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000413: chr [1:14] "18087" "19035" "19038" "23988" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000422: chr [1:106] "11739" "11740" "11793" "11983" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000423: chr [1:89] "11739" "11740" "11793" "11983" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000425: chr [1:11] "11920" "12421" "18412" "19302" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000578: chr [1:46] "12387" "12667" "12705" "12808" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000712: chr [1:17] "17350" "20892" "21973" "21974" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000723: chr [1:156] "11545" "11792" "11920" "11991" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000724: chr [1:178] "11350" "11461" "11545" "11920" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000725: chr [1:183] "11350" "11461" "11545" "11920" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000731: chr [1:37] "12581" "18538" "18968" "18971" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000768: chr [1:70] "11501" "11502" "12292" "12334" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000819: chr [1:229] "11461" "11789" "11799" "11848" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000820: chr [1:7] "11789" "12752" "16467" "20186" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000821: chr [1:4] "12752" "14194" "20540" "381290"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000902: chr [1:1151] "11308" "11350" "11352" "11423" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000910: chr [1:187] "11735" "11744" "11789" "11799" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000912: chr [1:9] "13605" "18571" "18810" "20166" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000915: chr [1:9] "13605" "18571" "18810" "20166" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000956: chr [1:124] "11810" "11920" "11991" "12192" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001100: chr "66214"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001101: chr [1:267] "11827" "11898" "11977" "11991" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001408: chr [1:10] "20509" "27416" "30936" "56392" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001501: chr [1:591] "11432" "11433" "11474" "11480" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001502: chr [1:22] "11595" "12023" "12167" "12814" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001503: chr [1:511] "11423" "11474" "11477" "11480" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001504: chr [1:45] "11820" "13162" "13340" "13489" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001508: chr [1:186] "11435" "11438" "11441" "11444" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001510: chr [1:69] "11651" "13434" "14113" "14791" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001516: chr [1:33] "11998" "13614" "13615" "16149" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001519: chr "18484"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001523: chr [1:79] "11304" "11522" "11529" "11532" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001525: chr [1:588] "11350" "11421" "11465" "11477" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001539: chr [1:260] "11441" "11497" "11500" "11642" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001541: chr [1:82] "11516" "11600" "11622" "11705" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001542: chr [1:15] "11504" "11576" "11606" "13615" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001543: chr [1:3] "11606" "13615" "268903"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001545: chr [1:3] "14309" "20779" "74434"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001547: chr [1:13] "12167" "13874" "13982" "14453" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001549: chr [1:2] "18159" "230103"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001550: chr [1:4] "12167" "13874" "19288" "21930"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001553: chr [1:17] "12394" "14366" "14566" "16323" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001554: chr [1:5] "12366" "12367" "18128" "20564" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001556: chr [1:40] "12173" "12190" "12531" "13164" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001558: chr [1:456] "11350" "11426" "11479" "11482" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001560: chr [1:3] "214384" "235036" "668303"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001561: chr [1:6] "15112" "16922" "26458" "56794" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001562: chr [1:47] "11846" "12051" "12183" "12493" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001568: chr [1:808] "11350" "11421" "11465" "11475" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0001569: chr [1:45] "11350" "11477" "11600" "11622" ...</span></span>
+<span><span class="co">#   .. .. .. .. .. [list output truncated]</span></span>
+<span><span class="co">#   .. .. .. ..@ readable     : logi TRUE</span></span>
+<span><span class="co">#   .. .. .. ..@ termsim      : num[0 , 0 ] </span></span>
+<span><span class="co">#   .. .. .. ..@ method       : chr(0) </span></span>
+<span><span class="co">#   .. .. .. ..@ dr           : list()</span></span>
+<span><span class="co">#   .. ..$ deseq2|treat_vs_control|go|sigDown:Formal class 'enrichResult' [package "DOSE"] with 15 slots</span></span>
+<span><span class="co">#   .. .. .. ..@ result       :'data.frame':    1455 obs. of  13 variables:</span></span>
+<span><span class="co">#   .. .. .. .. ..$ ONTOLOGY      : chr [1:1455] "BP" "BP" "BP" "BP" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ ID            : chr [1:1455] "GO:0022613" "GO:0042254" "GO:0016072" "GO:0006364" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ Description   : chr [1:1455] "ribonucleoprotein complex biogenesis" "ribosome biogenesis" "rRNA metabolic process" "rRNA processing" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GeneRatio     : chr [1:1455] "266/3534" "196/3534" "152/3534" "138/3534" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ BgRatio       : chr [1:1455] "454/28832" "320/28832" "256/28832" "215/28832" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ RichFactor    : num [1:1455] 0.586 0.613 0.594 0.642 0.412 ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ FoldEnrichment: num [1:1455] 4.78 5 4.84 5.24 3.36 ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ zScore        : num [1:1455] 30.3 26.9 23.1 23.3 18.6 ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ pvalue        : num [1:1455] 1.03e-124 1.02e-96 2.21e-72 4.40e-72 4.34e-53 ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ p.adjust      : num [1:1455] 6.21e-121 3.10e-93 4.45e-69 6.66e-69 5.25e-50 ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ qvalue        : num [1:1455] 5.02e-121 2.50e-93 3.60e-69 5.38e-69 4.24e-50 ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ geneID        : chr [1:1455] "Eif3c/Rpp30/Snrpb/Rpl13a/Rpl38/Ddx28/Eif6/Rps11/Rps25/Rps7/Prpf19/Ythdc1/Exosc8/Rps6-ps4/Rps24/Rpl35a/Srsf10/Us"| __truncated__ "Rpp30/Rpl38/Ddx28/Eif6/Rps11/Rps25/Rps7/Exosc8/Rps6-ps4/Rps24/Rpl35a/Usp36/Rps15/Utp3/Rpsa/Rplp0/Ngrn/Rpl14/Rps"| __truncated__ "Rpp30/Trir/Eif6/Rps25/Rps7/Exosc8/Rps6-ps4/Rps24/Rpl35a/Usp36/Rps15/Utp3/Rpl14/Utp25/Tfb1m/Ercc3/Exosc10/Myg1/M"| __truncated__ "Rpp30/Eif6/Rps25/Rps7/Exosc8/Rps6-ps4/Rps24/Rpl35a/Usp36/Rps15/Utp3/Rpl14/Utp25/Tfb1m/Exosc10/Myg1/Mrm3/Mettl5/"| __truncated__ ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ Count         : int [1:1455] 266 196 152 138 179 186 123 152 125 144 ...</span></span>
+<span><span class="co">#   .. .. .. ..@ pvalueCutoff : num 0.05</span></span>
+<span><span class="co">#   .. .. .. ..@ pAdjustMethod: chr "BH"</span></span>
+<span><span class="co">#   .. .. .. ..@ qvalueCutoff : num 0.2</span></span>
+<span><span class="co">#   .. .. .. ..@ organism     : chr "Mus musculus"</span></span>
+<span><span class="co">#   .. .. .. ..@ ontology     : chr "GOALL"</span></span>
+<span><span class="co">#   .. .. .. ..@ gene         : chr [1:4556] "56347" "70238" "22278" "20713" ...</span></span>
+<span><span class="co">#   .. .. .. ..@ keytype      : chr "ENTREZID"</span></span>
+<span><span class="co">#   .. .. .. ..@ universe     : chr [1:28832] "11545" "12628" "13804" "16882" ...</span></span>
+<span><span class="co">#   .. .. .. ..@ gene2Symbol  : Named chr [1:4556] "Eif3c" "Rnf168" "Usf1" "Serpini1" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..- attr(*, "names")= chr [1:4556] "56347" "70238" "22278" "20713" ...</span></span>
+<span><span class="co">#   .. .. .. ..@ geneSets     :List of 13974</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000002: chr [1:37] "11545" "12628" "13804" "16882" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000012: chr [1:14] "11545" "14211" "21958" "22064" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000017: chr [1:2] "20537" "246787"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000018: chr [1:141] "11350" "11461" "11545" "12053" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000019: chr [1:7] "12144" "13871" "17350" "19360" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000022: chr [1:10] "11799" "16319" "16571" "20877" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000027: chr [1:18] "12181" "16418" "17725" "59014" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000028: chr [1:22] "14109" "16785" "17724" "19090" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000038: chr [1:34] "11430" "11666" "12686" "14081" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000041: chr [1:110] "11306" "11776" "11927" "11977" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000045: chr [1:128] "11781" "11793" "11938" "12421" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000050: chr [1:11] "11846" "11847" "11898" "12606" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000052: chr [1:7] "11898" "15194" "18416" "56454" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000053: chr [1:2] "11898" "109900"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000054: chr [1:17] "16418" "18148" "19069" "19384" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000055: chr [1:8] "18148" "19069" "19384" "97112" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000056: chr [1:8] "18148" "19069" "19384" "20054" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000070: chr [1:189] "11789" "11799" "11848" "11920" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000075: chr [1:205] "11789" "11799" "11909" "11920" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000076: chr [1:18] "15574" "18392" "19356" "19367" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000077: chr [1:121] "11909" "11920" "12021" "12144" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000079: chr [1:45] "11491" "11651" "11789" "11819" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000080: chr "320558"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000082: chr [1:223] "11461" "11477" "11479" "11491" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000085: chr "50883"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000086: chr [1:144] "11799" "11820" "11920" "12021" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000087: chr [1:2] "18023" "107995"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000089: chr [1:2] "18023" "107995"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000096: chr [1:32] "11611" "11720" "12116" "12286" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000097: chr [1:16] "12116" "12411" "14598" "17769" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000098: chr [1:7] "11611" "11720" "12411" "12583" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000101: chr [1:13] "17254" "18023" "20510" "20511" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000105: chr [1:2] "108156" "665563"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000122: chr [1:984] "11481" "11545" "11568" "11569" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000132: chr [1:38] "12615" "13191" "13589" "14165" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000154: chr [1:32] "14113" "14791" "15278" "52530" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000160: chr "18103"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000165: chr [1:850] "11350" "11352" "11441" "11450" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000183: chr [1:9] "18676" "20937" "64383" "93759" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000184: chr [1:48] "11810" "14852" "14853" "15384" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000209: chr [1:272] "11796" "11797" "11798" "12005" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000212: chr [1:25] "12316" "12442" "13194" "17451" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000226: chr [1:688] "11350" "11603" "11735" "11789" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000237: chr [1:6] "17350" "21749" "22210" "22596" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000239: chr [1:4] "57746" "57749" "110957" "671232"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000244: chr [1:11] "19134" "22258" "27756" "28000" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000245: chr [1:50] "13046" "14007" "14105" "19655" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000255: chr [1:13] "11486" "14544" "18950" "22262" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000266: chr [1:52] "11774" "12176" "13179" "14245" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000271: chr [1:67] "11364" "11651" "11652" "11771" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000272: chr [1:40] "11548" "11554" "12421" "12655" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000278: chr [1:894] "11350" "11461" "11477" "11479" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000279: chr [1:15] "14841" "17350" "18023" "21749" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000280: chr [1:466] "11789" "11799" "11848" "11920" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000281: chr [1:93] "11735" "11789" "11799" "11840" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000288: chr [1:52] "11991" "12192" "12193" "12227" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000289: chr [1:26] "12227" "17350" "18458" "18983" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000290: chr [1:12] "12457" "18983" "53872" "67207" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000292: chr "83703"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000302: chr [1:226] "11350" "11502" "11517" "11545" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000303: chr [1:26] "11545" "11808" "11977" "12460" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000305: chr [1:27] "11545" "11808" "11977" "12460" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000320: chr [1:5] "12443" "12449" "17869" "17986" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000338: chr [1:11] "12848" "26572" "26754" "26891" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000349: chr [1:2] "67439" "72886"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000350: chr [1:2] "57905" "67229"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000375: chr [1:315] "11758" "11834" "12261" "12696" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000377: chr [1:315] "11758" "11834" "12261" "12696" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000379: chr [1:3] "66078" "76265" "381802"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000380: chr [1:84] "13046" "13207" "13211" "13548" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000381: chr [1:63] "13046" "13207" "13548" "13992" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000387: chr [1:37] "12729" "12812" "19134" "20595" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000388: chr "320632"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000389: chr [1:2] "57905" "193116"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000393: chr [1:5] "57905" "67229" "67439" "72886" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000394: chr [1:11] "28088" "66078" "66637" "67106" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000395: chr [1:6] "20630" "101739" "110809" "231769" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000398: chr [1:315] "11758" "11834" "12261" "12696" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000413: chr [1:14] "18087" "19035" "19038" "23988" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000422: chr [1:106] "11739" "11740" "11793" "11983" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000423: chr [1:89] "11739" "11740" "11793" "11983" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000425: chr [1:11] "11920" "12421" "18412" "19302" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000429: chr [1:8] "17977" "18519" "21428" "22278" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000430: chr [1:7] "18519" "21428" "22278" "22282" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000432: chr [1:6] "18519" "21428" "22278" "22282" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000436: chr [1:7] "17977" "18519" "21428" "22278" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000447: chr [1:8] "30946" "59014" "59028" "66481" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000448: chr [1:3] "12181" "18148" "74035"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000451: chr [1:2] "67390" "217038"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000454: chr [1:5] "52530" "66181" "68147" "234344" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000455: chr [1:4] "68327" "106707" "245474" "271842"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000460: chr [1:33] "12181" "16418" "18148" "19090" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000461: chr "66481"</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000462: chr [1:33] "13871" "20055" "20085" "20116" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000463: chr [1:18] "12181" "18148" "19989" "52202" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000466: chr [1:22] "12181" "18148" "30946" "50911" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000467: chr [1:7] "50911" "50912" "66362" "66446" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000470: chr [1:27] "12181" "16418" "18148" "19989" ...</span></span>
+<span><span class="co">#   .. .. .. .. ..$ GO:0000472: chr [1:3] "30946" "67842" "213773"</span></span>
+<span><span class="co">#   .. .. .. .. .. [list output truncated]</span></span>
+<span><span class="co">#   .. .. .. ..@ readable     : logi TRUE</span></span>
+<span><span class="co">#   .. .. .. ..@ termsim      : num[0 , 0 ] </span></span>
+<span><span class="co">#   .. .. .. ..@ method       : chr(0) </span></span>
+<span><span class="co">#   .. .. .. ..@ dr           : list()</span></span>
+<span><span class="co">#   ..@ elementType    : chr "ANY"</span></span>
+<span><span class="co">#   ..@ elementMetadata: NULL</span></span>
+<span><span class="co">#   ..@ metadata       : list()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The output contains separate <code>enrichResult</code> objects for up-regulated and down-regulated gene sets. These objects are compatible with the <strong>enrichplot</strong> package, allowing direct visualization of enrichment results:</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yulab-smu.top/contribution-knowledge-mining/">enrichplot</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/enrichplot/man/dotplot.html">dotplot</a></span><span class="op">(</span><span class="va">enrich.res</span><span class="op">$</span><span class="va">`deseq2|treat_vs_control|go|sigUp`</span>,</span>
+<span>        label_format <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"sigUp genes"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/enrichplot/man/dotplot.html">dotplot</a></span><span class="op">(</span><span class="va">enrich.res</span><span class="op">$</span><span class="va">`deseq2|treat_vs_control|go|sigDown`</span>,</span>
+<span>        label_format <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"sigDown genes"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/go-plot.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>GSEA analysis can be performed, and the results are stored in the&nbsp;<code>enrichmentData</code>&nbsp;slot:</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/run_enrichment.html">run_enrichment</a></span><span class="op">(</span><span class="va">os</span>,</span>
+<span>                     enrich_type <span class="op">=</span> <span class="st">"gsea_kegg"</span>,</span>
+<span>                     organism <span class="op">=</span> <span class="st">"mmu"</span>,</span>
+<span>                     OrgDb <span class="op">=</span> <span class="va">org.Mm.eg.db</span>,</span>
+<span>                     pvalueCutoff  <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span><span class="co"># Start for method of deseq2 and contrast for treat_vs_control enrichment analysis...</span></span>
+<span><span class="co"># 'select()' returned 1:1 mapping between keys and columns</span></span>
+<span><span class="co"># using 'fgsea' for GSEA analysis, please cite Korotkevich et al (2019).</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># preparing geneSet collections...</span></span>
+<span><span class="co"># GSEA analysis...</span></span>
+<span><span class="co"># leading edge analysis...</span></span>
+<span><span class="co"># done...</span></span>
+<span></span>
+<span><span class="va">enrich.res</span> <span class="op">&lt;-</span> <span class="va">os</span><span class="op">@</span><span class="va">enrichmentData</span><span class="op">$</span><span class="va">GSEA_KEGG</span></span>
+<span></span>
+<span><span class="va">enrich.res</span><span class="op">$</span><span class="va">`deseq2|treat_vs_control|gsea_kegg`</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#                ID                                                   Description setSize enrichmentScore      NES pvalue     p.adjust</span></span>
+<span><span class="co"># mmu04512 mmu04512                                      ECM-receptor interaction      86       0.6691084 2.467768  1e-10 3.136364e-09</span></span>
+<span><span class="co"># mmu04061 mmu04061 Viral protein interaction with cytokine and cytokine receptor      87       0.6656097 2.454405  1e-10 3.136364e-09</span></span>
+<span><span class="co"># mmu04820 mmu04820                                  Cytoskeleton in muscle cells     231       0.5735884 2.405003  1e-10 3.136364e-09</span></span>
+<span><span class="co"># mmu05146 mmu05146                                                    Amoebiasis     101       0.6289523 2.388869  1e-10 3.136364e-09</span></span>
+<span><span class="co"># mmu04510 mmu04510                                                Focal adhesion     199       0.5753364 2.379325  1e-10 3.136364e-09</span></span>
+<span><span class="co"># mmu04060 mmu04060                        Cytokine-cytokine receptor interaction     262       0.5370025 2.282545  1e-10 3.136364e-09</span></span>
+<span><span class="co">#               qvalue rank                   leading_edge</span></span>
+<span><span class="co"># mmu04512 1.69378e-09 4874 tags=55%, list=16%, signal=46%</span></span>
+<span><span class="co"># mmu04061 1.69378e-09 3024 tags=45%, list=10%, signal=40%</span></span>
+<span><span class="co"># mmu04820 1.69378e-09 4874 tags=44%, list=16%, signal=37%</span></span>
+<span><span class="co"># mmu05146 1.69378e-09 3521 tags=37%, list=12%, signal=32%</span></span>
+<span><span class="co"># mmu04510 1.69378e-09 5017 tags=36%, list=17%, signal=30%</span></span>
+<span><span class="co"># mmu04060 1.69378e-09 6917 tags=49%, list=23%, signal=38%</span></span>
+<span><span class="co">#                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      core_enrichment</span></span>
+<span><span class="co"># mmu04512                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Col6a3/Col1a1/Col6a1/Col4a6/Itgb6/Frem1/Col1a2/Col4a5/Tnc/Col6a2/Cd44/Col9a1/Vtn/Gp6/Itga4/Itga2/Lamc3/Thbs1/Lama4/Gp9/Lama2/Itgb3/Itga8/Cd36/Cd47/Fras1/Itgb8/Col4a3/Col4a2/Npnt/Col9a2/Reln/Col4a1/Thbs4/Sv2b/Thbs2/Lamc2/Lamb3/Itga2b/Lamb2/Col6a6/Itga7/Itga1/Col2a1/Itgb5/Comp/Fn1</span></span>
+<span><span class="co"># mmu04061                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Pf4/Ccl9/Ccl2/Ccl7/Ppbp/Csf1r/Cxcr2/Il10ra/Ccr1/Cx3cr1/Ccl12/Tnf/Il2rb/Il18rap/Ccr5/Csf1/Cxcl12/Ccr2/Il18/Cxcl13/Il24/Tnfrsf14/Ackr3/Cxcl5/Tnfsf14/Cxcl1/Il10rb/Ccl3/Il19/Cx3cl1/Il6ra/Ccr1l1/Ccl6/Cxcr4/Ccl4/Ccl24/Cxcl11/Tnfrsf1a/Ccl17</span></span>
+<span><span class="co"># mmu04820                                                                                                                                                                                              Col3a1/Col6a3/Trim55/Dcn/Col1a1/Csrp3/Col6a1/Tnnt2/Col4a6/Itgb6/Tnni1/Actg2/Col1a2/Myh7/Col4a5/Tnni2/Fbln2/Col5a1/Col6a2/Myh6/Col5a2/Fhl2/Tnnt3/Myl3/Col11a1/Daam2/Mybpc3/Col9a1/Actc1/Myoz2/Sspn/Ankrd1/Itga4/Itga2/Tcap/Bgn/Atp1b4/Thbs1/Ankrd2/Fbn2/Myl7/Nebl/Col24a1/Dsc2/Lama2/Myl4/Fbn1/Lmod3/Itgb3/Itga8/Sdc3/Tnnc1/Xirp1/Tmod1/Mybph/Itgb8/Col4a3/Myl2/Pdlim3/3425401B19Rik/Col4a2/Myl1/Col9a2/Pdlim4/Eno2/Lmod1/Dsp/Myl9/Vcan/Col4a1/Sdc2/Thbs4/Ldb3/Col27a1/Myh15/Thbs2/Des/Atp1a2/Myom1/Eln/Pdlim2/Fhl1/Itga2b/Col6a6/Csrp1/Fbln1/Nrap/Col11a2/Nid1/Syne1/Tpm4/Myh11/Tpm2/Itga7/Itga1/Sgce/Tpm1/Itgb5/Sun2/Comp/Fn1</span></span>
+<span><span class="co"># mmu05146                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Serpinb9e/Col3a1/Col1a1/Tlr4/Col4a6/Serpinb9c/Serpinb6b/Serpinb9g/Col1a2/Serpinb9d/Col4a5/Serpinb9f/Serpinb9/Tnf/Serpinb10/Cd14/Il1r1/Lamc3/Rab7b/Lama4/Tgfb2/Lama2/Serpinb9b/Tgfb3/Nos2/Col4a3/Tgfb1/Cxcl1/Col4a2/Plcb2/Itgb2/C9/Col4a1/Il1b/Lamc2/Lamb3/Lamb2</span></span>
+<span><span class="co"># mmu04510                                                                                                                                                                                                                                                                                                                                                                                                 Col6a3/Col1a1/Col6a1/Col4a6/Itgb6/Col1a2/Hgf/Col4a5/Tnc/Col6a2/Kdr/Mylk3/Rac2/Col9a1/Igf1/Vtn/Cav1/Itga4/Itga2/Lamc3/Flt1/Cav2/Pgf/Thbs1/Lama4/Myl7/Parva/Lama2/Pdgfrb/Itgb3/Itga8/Ccnd2/Mylk/Emp2/Vav1/Egfr/Itgb8/Col4a3/Pdgfra/Myl2/Col4a2/Col9a2/Pdgfd/Reln/Myl9/Col4a1/Shc3/Vav3/Thbs4/Thbs2/Rasgrf1/Lamc2/Cav3/Bcl2/Pdgfb/Lamb3/Itga2b/Akt1/Lamb2/Col6a6/Pdgfc/Vegfa/Itga7/Itga1/Col2a1/Capn2/Itgb5/Comp/Met/Fn1/Myl10</span></span>
+<span><span class="co"># mmu04060 Pf4/Bmp5/Ccl9/Ccl2/Gdf6/Gdf10/Ccl7/Ppbp/Mstn/Csf1r/Csf2rb/Prl6a1/Cxcr2/Il10ra/Ccr1/Mpl/Csf2rb2/Gdf2/Il21r/Bmp10/Cx3cr1/Inhba/Ccl12/Tnf/Il2rb/Il1rl1/Il18rap/Ccr5/Acvr1c/Bmp3/Il1r1/Osmr/Tgfbr2/Csf1/Bmp2/Ghr/Cxcl12/Il1rn/Ccr2/Il18/Tgfb2/Cxcl13/Tnfrsf11b/Tgfb3/Tnfrsf9/Fas/Il24/Tnfrsf14/Csf3r/Ackr3/Acvrl1/Cxcl5/Tnfrsf11a/Tgfb1/Tnfsf9/Tnfsf14/Tnfsf15/Cxcl1/Il10rb/Ccl3/Il19/Cx3cl1/Il6ra/Ccr1l1/Il27/Prl5a1/Cxcl15/Ccl6/Cxcr4/Ccl4/Il31/Ifngr2/Ccl24/Il4ra/Il1b/Il11ra1/Cxcl11/Il11ra2/Tnfrsf1a/Ccl17/Tnfsf8/Lepr/Il7r/Ltbr/Tslp/Il13ra2/Prl/Ccl28/Il15/Il1rap/Clcf1/Tnfsf13b/Cxcl3/Il13ra1/Ifnar2/Ccl22/Tnfsf4/Il34/Ccl11/Cxcr1/Il18r1/Il9/Ccr6/Prlr/Ccl19/Il22ra1/Il17re/Il11/Il15ra/Csf3/Tnfrsf18/Tnfrsf13b/Bmp7/Il4/Ifngr1/Cxcr5/Tnfrsf12a/Ngf/Acvr1/Cd40/Il5ra/Il1rl2/Bmpr2/Bmp6/Cxcl14/Ccl21b/Inha/Ccr10/Cxcl10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, perform visualization of the GSEA results:</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/enrichplot/man/gseaplot2.html">gseaplot2</a></span><span class="op">(</span><span class="va">enrich.res</span><span class="op">$</span><span class="va">`deseq2|treat_vs_control|gsea_kegg`</span>,</span>
+<span>          geneSetID <span class="op">=</span> <span class="st">"mmu04820"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/enrichplot/man/gseaplot2.html">gseaplot2</a></span><span class="op">(</span><span class="va">enrich.res</span><span class="op">$</span><span class="va">`deseq2|treat_vs_control|gsea_kegg`</span>,</span>
+<span>                geneSetID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mmu04820"</span>,<span class="st">"mmu04512"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div style="display: flex;">
+<p><img src="image/gsea1.png" style="width: 49%;"><img src="image/gsea2.png" style="width: 49%;"></p>
+</div>
+</section><section id="pathway-and-transcription-factor-activity-inference" class="level2" data-number="1.9"><h2 data-number="1.9" class="anchored" data-anchor-id="pathway-and-transcription-factor-activity-inference">
+<span class="header-section-number">1.9</span> Pathway and transcription factor activity inference</h2>
+<p>The <strong>omicScope</strong> package seamlessly integrates pathway and transcription factor activity inference capabilities from the <strong>decoupleR</strong> package. This integration enables users to perform activity estimation with a single command, with the resulting activity scores automatically stored in the <code>activityData</code> slot of the <strong>omicscope</strong> object.</p>
+<p>omicScope comes with pre-loaded pathway and transcription factor regulatory network data for both <strong>human</strong> and <strong>mouse</strong> organisms, eliminating the need for users to download external databases.</p>
+<section id="pathway-activity-inference" class="level3" data-number="1.9.1"><h3 data-number="1.9.1" class="anchored" data-anchor-id="pathway-activity-inference">
+<span class="header-section-number">1.9.1</span> Pathway activity inference</h3>
+<p>To perform activity inference, use the&nbsp;<code><a href="https://rdrr.io/pkg/omicScope/man/infer_activity.html">infer_activity()</a></code>&nbsp;function and specify the&nbsp;<code>input_type</code>&nbsp;parameter (defining the input data format) and&nbsp;<code>infer_type</code>&nbsp;parameter (specifying pathway or transcription factor inference). The function returns an&nbsp;<code>activityData</code>&nbsp;S4 object containing three slots:&nbsp;<code>netData</code>&nbsp;(prior knowledge network),&nbsp;<code>inputData</code>&nbsp;(gene expression matrix), and&nbsp;<code>resData</code>&nbsp;(estimated activity scores):</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/infer_activity.html">infer_activity</a></span><span class="op">(</span><span class="va">os</span>, </span>
+<span>                     input_type <span class="op">=</span> <span class="st">"counts"</span>,</span>
+<span>                     infer_type <span class="op">=</span> <span class="st">"pathway"</span>,</span>
+<span>                     organism <span class="op">=</span> <span class="st">"mouse"</span>,</span>
+<span>                     use_local_netdata <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">act</span> <span class="op">&lt;-</span> <span class="va">os</span><span class="op">@</span><span class="va">activityData</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">act</span><span class="op">)</span></span>
+<span><span class="co"># Formal class 'activitydata' [package "omicScope"] with 5 slots</span></span>
+<span><span class="co">#   ..@ inferType: chr "pathway"</span></span>
+<span><span class="co">#   ..@ netData  : tibble [7,000 × 4] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#   .. ..$ source : chr [1:7000] "Androgen" "Androgen" "Androgen" "Androgen" ...</span></span>
+<span><span class="co">#   .. ..$ target : chr [1:7000] "Tmprss2" "Nkx3-1" "Mboat2" "Sarg" ...</span></span>
+<span><span class="co">#   .. ..$ weight : num [1:7000] 11.49 10.62 10.47 11.39 7.36 ...</span></span>
+<span><span class="co">#   .. ..$ p_value: num [1:7000] 2.38e-47 2.21e-44 4.63e-44 2.79e-40 1.25e-39 ...</span></span>
+<span><span class="co">#   ..@ inputData: num [1:39732, 1:6] 0 0.596 0 0.137 0 ...</span></span>
+<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
+<span><span class="co">#   .. .. ..$ : chr [1:39732] "4933401J01Rik" "Xkr4" "Gm18956" "Gm37180" ...</span></span>
+<span><span class="co">#   .. .. ..$ : chr [1:6] "day0-rep1" "day0-rep2" "day4-rep1" "day4-rep2" ...</span></span>
+<span><span class="co">#   ..@ diffData :'data.frame': 0 obs. of  0 variables</span></span>
+<span><span class="co">#   ..@ resData  : tibble [84 × 6] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#   .. ..$ run_id   : num [1:84] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span><span class="co">#   .. ..$ statistic: chr [1:84] "mlm" "mlm" "mlm" "mlm" ...</span></span>
+<span><span class="co">#   .. ..$ source   : chr [1:84] "Androgen" "EGFR" "Estrogen" "Hypoxia" ...</span></span>
+<span><span class="co">#   .. ..$ condition: chr [1:84] "day0-rep1" "day0-rep1" "day0-rep1" "day0-rep1" ...</span></span>
+<span><span class="co">#   .. ..$ score    : num [1:84] 0.759 -0.253 0.399 1.19 -0.244 ...</span></span>
+<span><span class="co">#   .. ..$ p_value  : num [1:84] 0.448 0.8 0.69 0.234 0.807 ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Visualize the results using the&nbsp;<code><a href="https://rdrr.io/pkg/omicScope/man/activity_plot.html">activity_plot()</a></code>&nbsp;function:</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/activity_plot.html">activity_plot</a></span><span class="op">(</span><span class="va">os</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/pathway.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Activity inference can also be conducted using differential expression analysis results. To do this, provide the <code>diffdata</code> object from differential expression analysis to the <code>diff_data_obj</code> parameter:</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/infer_activity.html">infer_activity</a></span><span class="op">(</span><span class="va">os</span>, </span>
+<span>                     input_type <span class="op">=</span> <span class="st">"diff_data"</span>,</span>
+<span>                     diff_data_obj <span class="op">=</span> <span class="va">os</span><span class="op">@</span><span class="va">diffExpData</span><span class="op">$</span><span class="va">deseq2</span><span class="op">$</span><span class="va">treat_vs_control</span>,</span>
+<span>                     infer_type <span class="op">=</span> <span class="st">"pathway"</span>,</span>
+<span>                     organism <span class="op">=</span> <span class="st">"mouse"</span>,</span>
+<span>                     use_local_netdata <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co"># [2025-10-10 19:58:28] [TRACE]   [OmnipathR] Reading JSON from `C:\Users\JUNZHA~1\AppData\Local\Temp\RtmpeWbOhe/cache.json` (encoding: UTF-8).</span></span>
+<span><span class="co"># [2025-10-10 19:58:28] [TRACE]   [OmnipathR] JSON validation successful: TRUE</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/activity_plot.html">activity_plot</a></span><span class="op">(</span><span class="va">os</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/path-diff.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500"></p>
+</figure>
+</div>
+<p>To gain deeper insights into pathway activation, we can visualize the individual gene contributions within the pathway. The pathway demonstrates clear activation patterns: target genes with positive regulatory weights predominantly exhibit positive t-values (1st quadrant), while genes with negative weights largely show negative t-values (3rd quadrant), indicating concordant regulation:</p>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/activity_plot.html">activity_plot</a></span><span class="op">(</span><span class="va">os</span>, target_pathway <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"p53"</span>,<span class="st">"MAPK"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/path-gene.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section><section id="transcription-factor-activity-inference" class="level3" data-number="1.9.2"><h3 data-number="1.9.2" class="anchored" data-anchor-id="transcription-factor-activity-inference">
+<span class="header-section-number">1.9.2</span> Transcription factor activity inference</h3>
+<p>Transcription factor activity can be inferred by setting the <code>infer_type</code> parameter to “tf”. Users can select from various statistical methods using the <code>statistics</code> parameter (consult the official decoupleR documentation for a comprehensive list of available methods). When visualizing results with <code><a href="https://rdrr.io/pkg/omicScope/man/activity_plot.html">activity_plot()</a></code>, the <code>top_tf</code> parameter controls the number of top-ranked transcription factors displayed (default: 20):</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/infer_activity.html">infer_activity</a></span><span class="op">(</span><span class="va">os</span>, </span>
+<span>                     input_type <span class="op">=</span> <span class="st">"counts"</span>,</span>
+<span>                     infer_type <span class="op">=</span> <span class="st">"tf"</span>,</span>
+<span>                     organism <span class="op">=</span> <span class="st">"mouse"</span>,</span>
+<span>                     statistics <span class="op">=</span> <span class="st">"ulm"</span>,</span>
+<span>                     use_local_netdata <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co"># [2025-10-10 20:20:26] [TRACE]   [OmnipathR] Reading JSON from `C:\Users\JUNZHA~1\AppData\Local\Temp\RtmpeWbOhe/cache.json` (encoding: UTF-8).</span></span>
+<span><span class="co"># [2025-10-10 20:20:26] [TRACE]   [OmnipathR] JSON validation successful: TRUE</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/activity_plot.html">activity_plot</a></span><span class="op">(</span><span class="va">os</span>, top_tf <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/top-tf.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Differential expression analysis results provide another input option for transcription factor activity inference. By specifying a transcription factor of interest using the&nbsp;<code>target_tf</code>&nbsp;parameter in&nbsp;<code><a href="https://rdrr.io/pkg/omicScope/man/activity_plot.html">activity_plot()</a></code>, users can examine the expression patterns of its regulated target genes:</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/infer_activity.html">infer_activity</a></span><span class="op">(</span><span class="va">os</span>, </span>
+<span>                     input_type <span class="op">=</span> <span class="st">"diff_data"</span>,</span>
+<span>                     diff_data_obj <span class="op">=</span> <span class="va">os</span><span class="op">@</span><span class="va">diffExpData</span><span class="op">$</span><span class="va">deseq2</span><span class="op">$</span><span class="va">treat_vs_control</span>,</span>
+<span>                     infer_type <span class="op">=</span> <span class="st">"tf"</span>,</span>
+<span>                     organism <span class="op">=</span> <span class="st">"mouse"</span>,</span>
+<span>                     statistics <span class="op">=</span> <span class="st">"ulm"</span>,</span>
+<span>                     use_local_netdata <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co"># [2025-10-10 20:26:16] [TRACE]   [OmnipathR] Reading JSON from `C:\Users\JUNZHA~1\AppData\Local\Temp\RtmpeWbOhe/cache.json` (encoding: UTF-8).</span></span>
+<span><span class="co"># [2025-10-10 20:26:16] [TRACE]   [OmnipathR] JSON validation successful: TRUE</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/activity_plot.html">activity_plot</a></span><span class="op">(</span><span class="va">os</span>, target_tf <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Pou5f1"</span>,<span class="st">"Mef2a"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/tf-target.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/github\.com\/junjunlab\/omicScope");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./Introduction.html" class="pagination-link" aria-label="Overview">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Overview</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./RawCounts-example.html" class="pagination-link" aria-label="Raw counts example">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Raw counts example</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>omicScope documentation was written by Jun Zhang.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/junjunlab/omicScope/edit/main/BamFiles-example.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/junjunlab/omicScope/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>

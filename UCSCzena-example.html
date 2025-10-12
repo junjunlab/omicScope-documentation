@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Jun Zhang">
+<title>3&nbsp; UCSC xena example – omicScope</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./RawCounts-example.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-f1075ac1703e165f0c9b3df650605ffb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script defer="" data-domain="r4ds.hadley.nz" src="https://plausible.io/js/plausible.js"></script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./UCSCzena-example.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">UCSC xena example</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">omicScope</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/junjunlab/omicScope" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./BamFiles-example.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bam files example</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./RawCounts-example.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Raw counts example</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./UCSCzena-example.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">UCSC xena example</span></span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">3.1</span> Introduction</a></li>
+  <li><a href="#data-download" id="toc-data-download" class="nav-link" data-scroll-target="#data-download"><span class="header-section-number">3.2</span> Data download</a></li>
+  <li><a href="#omicscope-object-construction" id="toc-omicscope-object-construction" class="nav-link" data-scroll-target="#omicscope-object-construction"><span class="header-section-number">3.3</span> Omicscope object construction</a></li>
+  <li><a href="#data-normalization" id="toc-data-normalization" class="nav-link" data-scroll-target="#data-normalization"><span class="header-section-number">3.4</span> Data normalization</a></li>
+  <li><a href="#dimensionality-reduction" id="toc-dimensionality-reduction" class="nav-link" data-scroll-target="#dimensionality-reduction"><span class="header-section-number">3.5</span> Dimensionality reduction</a></li>
+  <li><a href="#differential-expression-analysis" id="toc-differential-expression-analysis" class="nav-link" data-scroll-target="#differential-expression-analysis"><span class="header-section-number">3.6</span> Differential expression analysis</a></li>
+  <li>
+<a href="#gene-expression-visualization" id="toc-gene-expression-visualization" class="nav-link" data-scroll-target="#gene-expression-visualization"><span class="header-section-number">3.7</span> Gene expression visualization</a>
+  <ul class="collapse">
+<li><a href="#gene-heatmap-plot" id="toc-gene-heatmap-plot" class="nav-link" data-scroll-target="#gene-heatmap-plot"><span class="header-section-number">3.7.1</span> Gene heatmap plot</a></li>
+  <li><a href="#gene-expression-boxplot" id="toc-gene-expression-boxplot" class="nav-link" data-scroll-target="#gene-expression-boxplot"><span class="header-section-number">3.7.2</span> Gene expression boxplot</a></li>
+  </ul>
+</li>
+  <li><a href="#gene-expression-correlation-analysis" id="toc-gene-expression-correlation-analysis" class="nav-link" data-scroll-target="#gene-expression-correlation-analysis"><span class="header-section-number">3.8</span> Gene expression correlation analysis</a></li>
+  <li><a href="#survival-analysis" id="toc-survival-analysis" class="nav-link" data-scroll-target="#survival-analysis"><span class="header-section-number">3.9</span> Survival analysis</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/junjunlab/omicScope/edit/main/UCSCzena-example.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/junjunlab/omicScope/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">
+<span class="chapter-number">3</span>&nbsp; <span class="chapter-title">UCSC xena example</span>
+</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="introduction" class="level2" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="introduction">
+<span class="header-section-number">3.1</span> Introduction</h2>
+<p><strong>UCSC Xena</strong> is a comprehensive portal for multi-cancer genomic and clinical data. OmicScope enables seamless integration of <strong>gene expression count matrices</strong>, <strong>clinical phenotypes</strong>, and <strong>survival data</strong> downloaded from UCSC Xena, facilitating downstream analyses including differential expression and survival prediction.</p>
+</section><section id="data-download" class="level2" data-number="3.2"><h2 data-number="3.2" class="anchored" data-anchor-id="data-download">
+<span class="header-section-number">3.2</span> Data download</h2>
+<p>For demonstration purposes, we use <strong>lung adenocarcinoma (LUAD)</strong> as a case study, downloading gene expression count matrices, clinical phenotype annotations, and survival outcome data from the UCSC Xena portal (<a href="https://xena.ucsc.edu/" class="uri">https://xena.ucsc.edu/</a>) to showcase OmicScope’s integrated analysis workflow:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Counts</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-LUAD.star_counts.tsv.gz</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Phenotype data</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-LUAD.clinical.tsv.gz</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Survival data</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-LUAD.survival.tsv.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="omicscope-object-construction" class="level2" data-number="3.3"><h2 data-number="3.3" class="anchored" data-anchor-id="omicscope-object-construction">
+<span class="header-section-number">3.3</span> Omicscope object construction</h2>
+<p>The omicscope object is constructed using the&nbsp;<code><a href="https://rdrr.io/pkg/omicScope/man/ucscZenaToObj.html">ucscZenaToObj()</a></code>&nbsp;function, where the&nbsp;<code>counts_data</code>,&nbsp;<code>pheno_data</code>, and&nbsp;<code>survival_data</code>&nbsp;parameters accept the gene expression matrix, clinical phenotype table, and survival data downloaded from UCSC Xena, respectively:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">omicScope</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/ucscZenaToObj.html">ucscZenaToObj</a></span><span class="op">(</span>gtf_anno <span class="op">=</span> <span class="st">"gencode.v36.annotation.gtf.gz"</span>,</span>
+<span>                     counts_data <span class="op">=</span> <span class="st">"TCGA-LUAD.star_counts.tsv.gz"</span>,</span>
+<span>                     pheno_data <span class="op">=</span> <span class="st">"TCGA-LUAD.clinical.tsv.gz"</span>,</span>
+<span>                     survival_data <span class="op">=</span> <span class="st">"TCGA-LUAD.survival.tsv.gz"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">obj</span></span>
+<span><span class="co"># class: omicscope </span></span>
+<span><span class="co"># dim: 60660 589 </span></span>
+<span><span class="co"># metadata(0):</span></span>
+<span><span class="co">#     assays(1): counts</span></span>
+<span><span class="co"># rownames(60660): ENSG00000000003.15 ENSG00000000005.6 ... ENSG00000288674.1 ENSG00000288675.1</span></span>
+<span><span class="co"># rowData names(3): gene_id gene_name gene_biotype</span></span>
+<span><span class="co"># colnames(589): TCGA-38-7271-01A TCGA-55-7914-01A ... TCGA-55-6969-01A TCGA-55-6969-11A</span></span>
+<span><span class="co"># colData names(96): sample id ... OS X_PATIENT</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="data-normalization" class="level2" data-number="3.4"><h2 data-number="3.4" class="anchored" data-anchor-id="data-normalization">
+<span class="header-section-number">3.4</span> Data normalization</h2>
+<p>Following object construction, the raw count matrix is normalized to <strong>TPM (Transcripts Per Million)</strong> to enable cross-sample comparisons：</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/normalize_data.html">normalize_data</a></span><span class="op">(</span><span class="va">obj</span>, norm_type <span class="op">=</span> <span class="st">"tpm"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="dimensionality-reduction" class="level2" data-number="3.5"><h2 data-number="3.5" class="anchored" data-anchor-id="dimensionality-reduction">
+<span class="header-section-number">3.5</span> Dimensionality reduction</h2>
+<p>Inter-sample relationships were assessed through dimensionality reduction analyses (<strong>PCA</strong>, <strong>UMAP</strong>, and <strong>t-SNE</strong>). To optimize computational efficiency, we restricted calculations to the top highly variable genes (HVGs) by configuring the&nbsp;<code>top_hvg_genes</code>&nbsp;parameter, significantly reducing processing time while preserving biologically relevant variance structures:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/run_reduction.html">run_reduction</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">obj</span>, </span>
+<span>                     reduction <span class="op">=</span> <span class="st">"pca"</span>,</span>
+<span>                     top_hvg_genes <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/run_reduction.html">run_reduction</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">obj</span>, </span>
+<span>                     reduction <span class="op">=</span> <span class="st">"umap"</span>,</span>
+<span>                     top_hvg_genes <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/run_reduction.html">run_reduction</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">obj</span>, </span>
+<span>                     reduction <span class="op">=</span> <span class="st">"tsne"</span>,</span>
+<span>                     top_hvg_genes <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The dimensionality reduction results are visualized using the&nbsp;<code><a href="https://rdrr.io/pkg/omicScope/man/dim_plot.html">dim_plot()</a></code>&nbsp;function, which generates scatter plots of samples projected onto the reduced dimensional space:</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/dim_plot.html">dim_plot</a></span><span class="op">(</span><span class="va">obj</span>, reduction <span class="op">=</span> <span class="st">"pca"</span><span class="op">)</span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/dim_plot.html">dim_plot</a></span><span class="op">(</span><span class="va">obj</span>, reduction <span class="op">=</span> <span class="st">"umap"</span><span class="op">)</span></span>
+<span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/dim_plot.html">dim_plot</a></span><span class="op">(</span><span class="va">obj</span>, reduction <span class="op">=</span> <span class="st">"tsne"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span> <span class="op">+</span> <span class="va">p3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/pca-umap-tsne.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section><section id="differential-expression-analysis" class="level2" data-number="3.6"><h2 data-number="3.6" class="anchored" data-anchor-id="differential-expression-analysis">
+<span class="header-section-number">3.6</span> Differential expression analysis</h2>
+<p>When analyzing differential expression in datasets with large sample sizes, edgeR and limma-voom are the recommended tools for their computational speed and robust statistical framework, with limma-voom illustrated in this example:</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/differential_expression.html">differential_expression</a></span><span class="op">(</span><span class="va">obj</span>, </span>
+<span>                               method <span class="op">=</span> <span class="st">"limma"</span>,</span>
+<span>                               limmaApproach <span class="op">=</span> <span class="st">"voom"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">diff</span> <span class="op">&lt;-</span> <span class="va">obj</span><span class="op">@</span><span class="va">diffExpData</span><span class="op">$</span><span class="va">limma</span><span class="op">$</span><span class="va">treat_vs_control</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">diff</span><span class="op">)</span></span>
+<span><span class="co"># Formal class 'diffdata' [package "omicScope"] with 9 slots</span></span>
+<span><span class="co">#   ..@ contrastName   : chr "treat_vs_control"</span></span>
+<span><span class="co">#   ..@ method         : chr "limma"</span></span>
+<span><span class="co">#   ..@ design         :List of 1</span></span>
+<span><span class="co">#   .. ..$ : num [1:589, 1:2] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span><span class="co">#   .. .. ..- attr(*, "dimnames")=List of 2</span></span>
+<span><span class="co">#   .. .. .. ..$ : chr [1:589] "TCGA-38-7271-01A" "TCGA-55-7914-01A" "TCGA-95-7043-01A" "TCGA-73-4658-01A" ...</span></span>
+<span><span class="co">#   .. .. .. ..$ : chr [1:2] "(Intercept)" "groupTumor"</span></span>
+<span><span class="co">#   .. .. ..- attr(*, "assign")= int [1:2] 0 1</span></span>
+<span><span class="co">#   .. .. ..- attr(*, "contrasts")=List of 1</span></span>
+<span><span class="co">#   .. .. .. ..$ group: chr "contr.treatment"</span></span>
+<span><span class="co">#   ..@ log2FCthreshold: num 1</span></span>
+<span><span class="co">#   ..@ pvalueThreshold: num 0.05</span></span>
+<span><span class="co">#   ..@ sigUp          : int 3973</span></span>
+<span><span class="co">#   ..@ sigDown        : int 3955</span></span>
+<span><span class="co">#   ..@ nonSig         : int 52732</span></span>
+<span><span class="co">#   ..@ data           :'data.frame':   60660 obs. of  10 variables:</span></span>
+<span><span class="co">#   .. ..$ gene_id       : chr [1:60660] "ENSG00000000003.15" "ENSG00000000005.6" "ENSG00000000419.13" "ENSG00000000457.14" ...</span></span>
+<span><span class="co">#   .. ..$ log2FoldChange: num [1:60660] 1.1 -0.429 0.296 0.526 1.678 ...</span></span>
+<span><span class="co">#   .. ..$ AveExpr       : num [1:60660] 5.87 -4.76 4.99 3.99 2.82 ...</span></span>
+<span><span class="co">#   .. ..$ t             : num [1:60660] 9.26 -1.37 3.97 7.06 13.32 ...</span></span>
+<span><span class="co">#   .. ..$ pvalue        : num [1:60660] 3.86e-19 1.70e-01 8.08e-05 4.80e-12 1.39e-35 ...</span></span>
+<span><span class="co">#   .. ..$ padj          : num [1:60660] 7.05e-18 2.33e-01 3.16e-04 4.65e-11 7.96e-34 ...</span></span>
+<span><span class="co">#   .. ..$ B             : num [1:60660] 32.26 -6.11 0.07 16.3 69.99 ...</span></span>
+<span><span class="co">#   .. ..$ gene_name     : chr [1:60660] "TSPAN6" "TNMD" "DPM1" "SCYL3" ...</span></span>
+<span><span class="co">#   .. ..$ gene_biotype  : chr [1:60660] "protein_coding" "protein_coding" "protein_coding" "protein_coding" ...</span></span>
+<span><span class="co">#   .. ..$ type          : chr [1:60660] "sigUp" "nonSig" "nonSig" "nonSig" ...</span></span>
+<span></span>
+<span><span class="co"># Check</span></span>
+<span><span class="va">diff</span><span class="op">@</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#              gene_id log2FoldChange   AveExpr          t       pvalue         padj            B gene_name   gene_biotype    type</span></span>
+<span><span class="co"># 1 ENSG00000000003.15      1.0997480  5.872692   9.255036 3.862856e-19 7.051485e-18  32.25994586    TSPAN6 protein_coding   sigUp</span></span>
+<span><span class="co"># 2  ENSG00000000005.6     -0.4286831 -4.762921  -1.374252 1.698829e-01 2.329236e-01  -6.10668869      TNMD protein_coding  nonSig</span></span>
+<span><span class="co"># 3 ENSG00000000419.13      0.2959509  4.987883   3.969822 8.075471e-05 3.155024e-04   0.07004036      DPM1 protein_coding  nonSig</span></span>
+<span><span class="co"># 4 ENSG00000000457.14      0.5261200  3.994452   7.056095 4.798641e-12 4.649187e-11  16.30391548     SCYL3 protein_coding  nonSig</span></span>
+<span><span class="co"># 5 ENSG00000000460.17      1.6777640  2.815088  13.316756 1.391922e-35 7.957963e-34  69.98860263  C1orf112 protein_coding   sigUp</span></span>
+<span><span class="co"># 6 ENSG00000000938.13     -2.2200498  4.360530 -18.605462 3.380108e-61 6.571710e-59 128.43374484       FGR protein_coding sigDown</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Visualizing differential expression results with volcano plots:</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/volcano_plot.html">volcano_plot</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">obj</span>,  method <span class="op">=</span> <span class="st">"limma"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/xena-vcp.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="531"></p>
+</figure>
+</div>
+</section><section id="gene-expression-visualization" class="level2" data-number="3.7"><h2 data-number="3.7" class="anchored" data-anchor-id="gene-expression-visualization">
+<span class="header-section-number">3.7</span> Gene expression visualization</h2>
+<p>Before visualizing gene expression, we need to extract normalized data using the&nbsp;<code>get_normalized_data</code>&nbsp;function:</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/get_normalized_data.html">get_normalized_data</a></span><span class="op">(</span><span class="va">obj</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="gene-heatmap-plot" class="level3" data-number="3.7.1"><h3 data-number="3.7.1" class="anchored" data-anchor-id="gene-heatmap-plot">
+<span class="header-section-number">3.7.1</span> Gene heatmap plot</h3>
+<p>In this analysis, we filtered for genes in the METTL family and visualized their expression patterns using the&nbsp;<code>exp_heatmap_plot</code>&nbsp;function to create a heatmap:</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dif.res</span> <span class="op">&lt;-</span> <span class="va">diff</span><span class="op">@</span><span class="va">data</span></span>
+<span></span>
+<span><span class="va">gene</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">dif.res</span>, <span class="fu"><a href="https://rdrr.io/r/base/startsWith.html">startsWith</a></span><span class="op">(</span><span class="va">gene_name</span>,<span class="st">"METTL"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/exp_heatmap_plot.html">exp_heatmap_plot</a></span><span class="op">(</span><span class="va">obj</span>, </span>
+<span>                 selected_gene <span class="op">=</span> <span class="va">gene</span><span class="op">$</span><span class="va">gene_name</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/ght.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>The heatmap appearance can be customized by passing parameters to ComplexHeatmap through&nbsp;<code>complexHeatmap_params</code>. For instance, to disable row clustering:</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/exp_heatmap_plot.html">exp_heatmap_plot</a></span><span class="op">(</span><span class="va">obj</span>, </span>
+<span>                 selected_gene <span class="op">=</span> <span class="va">gene</span><span class="op">$</span><span class="va">gene_name</span>,</span>
+<span>                 complexHeatmap_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>cluster_rows <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/ght2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section><section id="gene-expression-boxplot" class="level3" data-number="3.7.2"><h3 data-number="3.7.2" class="anchored" data-anchor-id="gene-expression-boxplot">
+<span class="header-section-number">3.7.2</span> Gene expression boxplot</h3>
+<p>By default, the&nbsp;<code>gene_boxViolin_plot</code>&nbsp;function generates boxplot visualizations and uses the Wilcoxon test for statistical analysis:</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/gene_boxViolin_plot.html">gene_boxViolin_plot</a></span><span class="op">(</span><span class="va">obj</span>,</span>
+<span>                    selected_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"METTL3"</span>,<span class="st">"METTL14"</span>,</span>
+<span>                                      <span class="st">"YTHDC1"</span>,<span class="st">"YTHDC2"</span>,</span>
+<span>                                      <span class="st">"YTHDF1"</span>,<span class="st">"YTHDF2"</span>,<span class="st">"YTHDF3"</span><span class="op">)</span>,</span>
+<span>                    point_col <span class="op">=</span> <span class="st">"grey50"</span>,</span>
+<span>                    point_alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/boxp.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>To visualize the data using violin plots, set the&nbsp;<code>type</code>&nbsp;parameter to&nbsp;<code>"violin"</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/gene_boxViolin_plot.html">gene_boxViolin_plot</a></span><span class="op">(</span><span class="va">obj</span>,</span>
+<span>                    selected_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"METTL3"</span>,<span class="st">"METTL14"</span>,</span>
+<span>                                      <span class="st">"YTHDC1"</span>,<span class="st">"YTHDC2"</span>,</span>
+<span>                                      <span class="st">"YTHDF1"</span>,<span class="st">"YTHDF2"</span>,<span class="st">"YTHDF3"</span><span class="op">)</span>,</span>
+<span>                    type <span class="op">=</span> <span class="st">"violin"</span>,</span>
+<span>                    jitter.width <span class="op">=</span> <span class="fl">0.15</span>,</span>
+<span>                    point_col <span class="op">=</span> <span class="st">"grey50"</span>,</span>
+<span>                    point_alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/viol.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section></section><section id="gene-expression-correlation-analysis" class="level2" data-number="3.8"><h2 data-number="3.8" class="anchored" data-anchor-id="gene-expression-correlation-analysis">
+<span class="header-section-number">3.8</span> Gene expression correlation analysis</h2>
+<p>Gene expression is tightly and intricately regulated, often resulting in groups of genes sharing similar or contrasting expression patterns that reflect their functional relationships. The&nbsp;<code>gene_cor_plot</code>&nbsp;function allows visualization of pairwise gene correlations:</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/gene_cor_plot.html">gene_cor_plot</a></span><span class="op">(</span><span class="va">obj</span>,</span>
+<span>                    gene_1 <span class="op">=</span> <span class="st">"METTL3"</span>,</span>
+<span>                    gene_2 <span class="op">=</span> <span class="st">"YTHDF2"</span>,</span>
+<span>                    selected_group <span class="op">=</span> <span class="st">"Tumor"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/gene_cor_plot.html">gene_cor_plot</a></span><span class="op">(</span><span class="va">obj</span>,</span>
+<span>                    gene_1 <span class="op">=</span> <span class="st">"METTL3"</span>,</span>
+<span>                    gene_2 <span class="op">=</span> <span class="st">"YTHDF2"</span>,</span>
+<span>                    selected_group <span class="op">=</span> <span class="st">"Normal"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/gene-cor.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section><section id="survival-analysis" class="level2" data-number="3.9"><h2 data-number="3.9" class="anchored" data-anchor-id="survival-analysis">
+<span class="header-section-number">3.9</span> Survival analysis</h2>
+<p>Because patient survival data was included during omicscope object construction, prognostic survival analysis is now possible. Survival curves can be generated by specifying the gene of interest in the&nbsp;<code>surv_plot</code>&nbsp;function:</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/surv_plot.html">surv_plot</a></span><span class="op">(</span><span class="va">obj</span>,</span>
+<span>          selected_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"YTHDF1"</span>,<span class="st">"YTHDF2"</span>,<span class="st">"YTHDF3"</span>,<span class="st">"METTL5"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/surv.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/github\.com\/junjunlab\/omicScope");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./RawCounts-example.html" class="pagination-link" aria-label="Raw counts example">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Raw counts example</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>omicScope documentation was written by Jun Zhang.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/junjunlab/omicScope/edit/main/UCSCzena-example.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/junjunlab/omicScope/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>
