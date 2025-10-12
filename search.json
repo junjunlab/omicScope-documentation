@@ -50,6 +50,16 @@
     ]
   },
   {
+    "objectID": "BamFiles-example.html#omicscope-object-construction",
+    "href": "BamFiles-example.html#omicscope-object-construction",
+    "title": "\n1  Bam files example\n",
+    "section": "\n1.2 Omicscope object construction",
+    "text": "1.2 Omicscope object construction\nIn the following example, we will construct an omicscope object using pre-aligned BAM files as input. In addition to the BAM files, sample metadata containing grouping information is required:\n\n# bam test\nlibrary(SummarizedExperiment)\nlibrary(omicScope)\n\nbams &lt;- list.files(\"../test-bam/\",pattern = \"*.bam$\")\nbams\n# [1] \"0a.bam\"         \"0a.sorted.bam\"  \"0b.bam\"         \"0b.sorted.bam\"  \"10a.bam\"        \"10a.sorted.bam\" \"10b.bam\"       \n# [8] \"10b.sorted.bam\" \"4a.bam\"         \"4a.sorted.bam\"  \"4b.bam\"         \"4b.sorted.bam\" \n\nbams &lt;- c(\"../test-bam/0a.sorted.bam\",\"../test-bam/0b.sorted.bam\",\n          \"../test-bam/4a.sorted.bam\",\"../test-bam/4b.sorted.bam\",\n          \"../test-bam/10a.sorted.bam\",\"../test-bam/10b.sorted.bam\")\n\n\nmta &lt;- data.frame(sample = bams,\n                  sample_name = c(\"day0-rep1\",\"day0-rep2\",\"day4-rep1\",\"day4-rep2\",\n                                  \"day10-rep1\",\"day10-rep2\"),\n                  group = rep(c(\"day0\",\"day4\",\"day10\"),each = 2))\nmta\n#                       sample sample_name group\n# 1  ../test-bam/0a.sorted.bam   day0-rep1  day0\n# 2  ../test-bam/0b.sorted.bam   day0-rep2  day0\n# 3  ../test-bam/4a.sorted.bam   day4-rep1  day4\n# 4  ../test-bam/4b.sorted.bam   day4-rep2  day4\n# 5 ../test-bam/10a.sorted.bam  day10-rep1 day10\n# 6 ../test-bam/10b.sorted.bam  day10-rep2 day10\n\nWe construct the omicscope object using the omicscope() function. The created object inherits from the SummarizedExperiment class, allowing users to access feature metadata and sample information using standard accessor functions like rowData() and colData(), respectively:\n\nos &lt;- omicscope(gtfAnno = \"../test-bam/Mus_musculus.GRCm38.102.gtf.gz\",\n                bamFile = bams,\n                metadata = mta)\nos\n# class: omicscope \n# dim: 55487 6 \n# metadata(0):\n#     assays(0):\n#     rownames(55487): ENSMUSG00000102693 ENSMUSG00000064842 ... ENSMUSG00000096730 ENSMUSG00000095742\n# rowData names(3): gene_id gene_name gene_biotype\n# colnames(6): ../test-bam/0a.sorted.bam ../test-bam/0b.sorted.bam ... ../test-bam/10a.sorted.bam ../test-bam/10b.sorted.bam\n# colData names(3): sample sample_name group\n\nrowData(os)\n# DataFrame with 55487 rows and 3 columns\n#                               gene_id      gene_name         gene_biotype\n#                           &lt;character&gt;    &lt;character&gt;          &lt;character&gt;\n# ENSMUSG00000102693 ENSMUSG00000102693  4933401J01Rik                  TEC\n# ENSMUSG00000064842 ENSMUSG00000064842        Gm26206                snRNA\n# ENSMUSG00000051951 ENSMUSG00000051951           Xkr4       protein_coding\n# ENSMUSG00000102851 ENSMUSG00000102851        Gm18956 processed_pseudogene\n# ENSMUSG00000103377 ENSMUSG00000103377        Gm37180                  TEC\n# ...                               ...            ...                  ...\n# ENSMUSG00000094431 ENSMUSG00000094431 CAAA01205117.1                miRNA\n# ENSMUSG00000094621 ENSMUSG00000094621 CAAA01098150.1                miRNA\n# ENSMUSG00000098647 ENSMUSG00000098647 CAAA01064564.1                miRNA\n# ENSMUSG00000096730 ENSMUSG00000096730       Vmn2r122       protein_coding\n# ENSMUSG00000095742 ENSMUSG00000095742 CAAA01147332.1       protein_coding\n\ncolData(os)\n# DataFrame with 6 rows and 3 columns\n#                                            sample sample_name       group\n#                                       &lt;character&gt; &lt;character&gt; &lt;character&gt;\n# ../test-bam/0a.sorted.bam  ../test-bam/0a.sorte..   day0-rep1        day0\n# ../test-bam/0b.sorted.bam  ../test-bam/0b.sorte..   day0-rep2        day0\n# ../test-bam/4a.sorted.bam  ../test-bam/4a.sorte..   day4-rep1        day4\n# ../test-bam/4b.sorted.bam  ../test-bam/4b.sorte..   day4-rep2        day4\n# ../test-bam/10a.sorted.bam ../test-bam/10a.sort..  day10-rep1       day10\n# ../test-bam/10b.sorted.bam ../test-bam/10b.sort..  day10-rep2       day10",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Bam files example</span>"
+    ]
+  },
+  {
     "objectID": "BamFiles-example.html#read-quantification-from-bam-files",
     "href": "BamFiles-example.html#read-quantification-from-bam-files",
     "title": "\n1  Bam files example\n",
@@ -70,13 +80,23 @@
     ]
   },
   {
-    "objectID": "BamFiles-example.html#dimention-reduction-and-clustering",
-    "href": "BamFiles-example.html#dimention-reduction-and-clustering",
-    "title": "\n1  Introduction\n",
-    "section": "\n1.4 Dimention reduction and clustering",
-    "text": "1.4 Dimention reduction and clustering\nPrincipal Component Analysis (PCA) is routinely employed in RNA-seq quality control workflows to identify potential outlier samples. The run_reduction() function implements three dimensionality reduction approaches (PCA, UMAP, and t-SNE) for exploring and visualizing the relationships between samples:\n\nos &lt;- run_reduction(object = os, reduction = \"pca\")\n\ndim_plot(os)",
+    "objectID": "BamFiles-example.html#dimensionality-reduction-and-clustering",
+    "href": "BamFiles-example.html#dimensionality-reduction-and-clustering",
+    "title": "\n1  Bam files example\n",
+    "section": "\n1.5 Dimensionality reduction and clustering",
+    "text": "1.5 Dimensionality reduction and clustering\nPrincipal Component Analysis (PCA) is routinely employed in RNA-seq quality control workflows to identify potential outlier samples. The run_reduction() function implements three dimensionality reduction approaches (PCA, UMAP, and t-SNE) for exploring and visualizing the relationships between samples:\n\nos &lt;- run_reduction(object = os, reduction = \"pca\")\n\ndim_plot(os)",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Bam files example</span>"
+    ]
+  },
+  {
+    "objectID": "BamFiles-example.html#sample-correlation-analysis",
+    "href": "BamFiles-example.html#sample-correlation-analysis",
+    "title": "\n1  Bam files example\n",
+    "section": "\n1.6 Sample correlation analysis",
+    "text": "1.6 Sample correlation analysis\nIn addition to dimensionality reduction approaches such as PCA and UMAP for exploring sample relationships, correlation analysis provides another perspective on inter-sample associations. The correlation_plot function performs correlation analysis and produces a correlation heatmap:\n\nlibrary(patchwork)\n\nos &lt;- get_normalized_data(os)\n\ncorrelation_plot(os)\n\n\n\n\n\nWhen sample names are specified for both x and y parameters, the function generates a correlation scatter plot:\n\np1 &lt;- correlation_plot(os,\n                       x = \"day0-rep1\",y = \"day0-rep2\")\n\np2 &lt;- correlation_plot(os,\n                       x = \"day10-rep1\",y = \"day10-rep2\")\n\np1 + p2",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Bam files example</span>"
     ]
   },
   {
@@ -110,26 +130,6 @@
     ]
   },
   {
-    "objectID": "BamFiles-example.html#dimensionality-reduction-and-clustering",
-    "href": "BamFiles-example.html#dimensionality-reduction-and-clustering",
-    "title": "\n1  Bam files example\n",
-    "section": "\n1.5 Dimensionality reduction and clustering",
-    "text": "1.5 Dimensionality reduction and clustering\nPrincipal Component Analysis (PCA) is routinely employed in RNA-seq quality control workflows to identify potential outlier samples. The run_reduction() function implements three dimensionality reduction approaches (PCA, UMAP, and t-SNE) for exploring and visualizing the relationships between samples:\n\nos &lt;- run_reduction(object = os, reduction = \"pca\")\n\ndim_plot(os)",
-    "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Bam files example</span>"
-    ]
-  },
-  {
-    "objectID": "BamFiles-example.html#sample-correlation-analysis",
-    "href": "BamFiles-example.html#sample-correlation-analysis",
-    "title": "\n1  Bam files example\n",
-    "section": "\n1.6 Sample correlation analysis",
-    "text": "1.6 Sample correlation analysis\nIn addition to dimensionality reduction approaches such as PCA and UMAP for exploring sample relationships, correlation analysis provides another perspective on inter-sample associations. The correlation_plot function performs correlation analysis and produces a correlation heatmap:\n\nlibrary(patchwork)\n\nos &lt;- get_normalized_data(os)\n\ncorrelation_plot(os)\n\n\n\n\n\nWhen sample names are specified for both x and y parameters, the function generates a correlation scatter plot:\n\np1 &lt;- correlation_plot(os,\n                       x = \"day0-rep1\",y = \"day0-rep2\")\n\np2 &lt;- correlation_plot(os,\n                       x = \"day10-rep1\",y = \"day10-rep2\")\n\np1 + p2",
-    "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Bam files example</span>"
-    ]
-  },
-  {
     "objectID": "RawCounts-example.html",
     "href": "RawCounts-example.html",
     "title": "\n2  Raw counts example\n",
@@ -140,11 +140,31 @@
     ]
   },
   {
+    "objectID": "RawCounts-example.html#counts-matrix-input",
+    "href": "RawCounts-example.html#counts-matrix-input",
+    "title": "\n2  Raw counts example\n",
+    "section": "\n2.2 Counts matrix input",
+    "text": "2.2 Counts matrix input\nHere we load the built-in example count matrix provided by OmicScope:\n\ndata(\"counts\")\n\n# check\nhead(counts)\n#                    ../test-bam/0a.sorted.bam ../test-bam/0b.sorted.bam ../test-bam/4a.sorted.bam ../test-bam/4b.sorted.bam\n# ENSMUSG00000102693                         0                         1                         0                         0\n# ENSMUSG00000051951                        13                        16                       109                       147\n# ENSMUSG00000102851                         0                         1                         2                         2\n# ENSMUSG00000103377                         3                         4                        13                        26\n# ENSMUSG00000104017                         0                         4                        13                        15\n# ENSMUSG00000103025                         0                         0                         7                        14\n#                    ../test-bam/10a.sorted.bam ../test-bam/10b.sorted.bam\n# ENSMUSG00000102693                          0                          0\n# ENSMUSG00000051951                         65                        105\n# ENSMUSG00000102851                          0                          0\n# ENSMUSG00000103377                          6                          9\n# ENSMUSG00000104017                         13                         10\n# ENSMUSG00000103025                          3                          3\n\nNext, we construct an omicscope object from the loaded count matrix:\n⚠️ Important: The metadata data frame must contain a sample column to identify sample information.\n\nmta &lt;- data.frame(sample = c(\"../test-bam/0a.sorted.bam\",\"../test-bam/0b.sorted.bam\",\n                             \"../test-bam/4a.sorted.bam\",\"../test-bam/4b.sorted.bam\",\n                             \"../test-bam/10a.sorted.bam\",\"../test-bam/10b.sorted.bam\"),\n                  sample_name = c(\"day0-rep1\",\"day0-rep2\",\"day4-rep1\",\"day4-rep2\",\n                                  \"day10-rep1\",\"day10-rep2\"),\n                  group = rep(c(\"day0\",\"day4\",\"day10\"),each = 2))\nmta\n#                       sample sample_name group\n# 1  ../test-bam/0a.sorted.bam   day0-rep1  day0\n# 2  ../test-bam/0b.sorted.bam   day0-rep2  day0\n# 3  ../test-bam/4a.sorted.bam   day4-rep1  day4\n# 4  ../test-bam/4b.sorted.bam   day4-rep2  day4\n# 5 ../test-bam/10a.sorted.bam  day10-rep1 day10\n# 6 ../test-bam/10b.sorted.bam  day10-rep2 day10\n\nos &lt;- omicscope(gtfAnno = \"../test-bam/Mus_musculus.GRCm38.102.gtf.gz\",\n                counts = counts,\n                metadata = mta)\n\nos\n# class: omicscope \n# dim: 39732 6 \n# metadata(0):\n# assays(1): counts\n# rownames(39732): ENSMUSG00000102693 ENSMUSG00000051951 ... ENSMUSG00000094621 ENSMUSG00000095742\n# rowData names(3): gene_id gene_name gene_biotype\n# colnames(6): day0-rep1 day0-rep2 ... day10-rep1 day10-rep2\n# colData names(3): sample sample_name group\n\nAlternatively, omicScope can directly parse the output files generated by FeatureCounts by setting the parameter featureCountOutput = TRUE:\n\n# Don't run\n# \n# os &lt;- omicscope(gtfAnno = \"../test-bam/Mus_musculus.GRCm38.102.gtf.gz\",\n#                 counts = \"featurecounts_output/counts.info.txt\",\n#                 featureCountOutput = TRUE,\n#                 metadata = mta)\n# os\n\nOnce the omicscope object is successfully created, users can proceed with downstream analyses including differential expression, pathway enrichment, and visualization.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Raw counts example</span>"
+    ]
+  },
+  {
     "objectID": "UCSCzena-example.html",
     "href": "UCSCzena-example.html",
     "title": "\n3  UCSC xena example\n",
     "section": "",
     "text": "3.1 Introduction\nUCSC Xena is a comprehensive portal for multi-cancer genomic and clinical data. OmicScope enables seamless integration of gene expression count matrices, clinical phenotypes, and survival data downloaded from UCSC Xena, facilitating downstream analyses including differential expression and survival prediction.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>UCSC xena example</span>"
+    ]
+  },
+  {
+    "objectID": "UCSCzena-example.html#data-download",
+    "href": "UCSCzena-example.html#data-download",
+    "title": "\n3  UCSC xena example\n",
+    "section": "\n3.2 Data download",
+    "text": "3.2 Data download\nFor demonstration purposes, we use lung adenocarcinoma (LUAD) as a case study, downloading gene expression count matrices, clinical phenotype annotations, and survival outcome data from the UCSC Xena portal (https://xena.ucsc.edu/) to showcase OmicScope’s integrated analysis workflow:\n\n# Counts\nwget https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-LUAD.star_counts.tsv.gz\n\n# Phenotype data\nwget https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-LUAD.clinical.tsv.gz\n\n# Survival data\nwget https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-LUAD.survival.tsv.gz",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>UCSC xena example</span>"
     ]
@@ -215,36 +235,6 @@
     "title": "\n3  UCSC xena example\n",
     "section": "\n3.9 Survival analysis",
     "text": "3.9 Survival analysis\nBecause patient survival data was included during omicscope object construction, prognostic survival analysis is now possible. Survival curves can be generated by specifying the gene of interest in the surv_plot function:\n\nsurv_plot(obj,\n          selected_gene = c(\"YTHDF1\",\"YTHDF2\",\"YTHDF3\",\"METTL5\"))",
-    "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>UCSC xena example</span>"
-    ]
-  },
-  {
-    "objectID": "RawCounts-example.html#counts-matrix-input",
-    "href": "RawCounts-example.html#counts-matrix-input",
-    "title": "\n2  Raw counts example\n",
-    "section": "\n2.2 Counts matrix input",
-    "text": "2.2 Counts matrix input\nHere we load the built-in example count matrix provided by OmicScope:\n\ndata(\"counts\")\n\n# check\nhead(counts)\n#                    ../test-bam/0a.sorted.bam ../test-bam/0b.sorted.bam ../test-bam/4a.sorted.bam ../test-bam/4b.sorted.bam\n# ENSMUSG00000102693                         0                         1                         0                         0\n# ENSMUSG00000051951                        13                        16                       109                       147\n# ENSMUSG00000102851                         0                         1                         2                         2\n# ENSMUSG00000103377                         3                         4                        13                        26\n# ENSMUSG00000104017                         0                         4                        13                        15\n# ENSMUSG00000103025                         0                         0                         7                        14\n#                    ../test-bam/10a.sorted.bam ../test-bam/10b.sorted.bam\n# ENSMUSG00000102693                          0                          0\n# ENSMUSG00000051951                         65                        105\n# ENSMUSG00000102851                          0                          0\n# ENSMUSG00000103377                          6                          9\n# ENSMUSG00000104017                         13                         10\n# ENSMUSG00000103025                          3                          3\n\nNext, we construct an omicscope object from the loaded count matrix:\n⚠️ Important: The metadata data frame must contain a sample column to identify sample information.\n\nmta &lt;- data.frame(sample = c(\"../test-bam/0a.sorted.bam\",\"../test-bam/0b.sorted.bam\",\n                             \"../test-bam/4a.sorted.bam\",\"../test-bam/4b.sorted.bam\",\n                             \"../test-bam/10a.sorted.bam\",\"../test-bam/10b.sorted.bam\"),\n                  sample_name = c(\"day0-rep1\",\"day0-rep2\",\"day4-rep1\",\"day4-rep2\",\n                                  \"day10-rep1\",\"day10-rep2\"),\n                  group = rep(c(\"day0\",\"day4\",\"day10\"),each = 2))\nmta\n#                       sample sample_name group\n# 1  ../test-bam/0a.sorted.bam   day0-rep1  day0\n# 2  ../test-bam/0b.sorted.bam   day0-rep2  day0\n# 3  ../test-bam/4a.sorted.bam   day4-rep1  day4\n# 4  ../test-bam/4b.sorted.bam   day4-rep2  day4\n# 5 ../test-bam/10a.sorted.bam  day10-rep1 day10\n# 6 ../test-bam/10b.sorted.bam  day10-rep2 day10\n\nos &lt;- omicscope(gtfAnno = \"../test-bam/Mus_musculus.GRCm38.102.gtf.gz\",\n                counts = counts,\n                metadata = mta)\n\nos\n# class: omicscope \n# dim: 39732 6 \n# metadata(0):\n# assays(1): counts\n# rownames(39732): ENSMUSG00000102693 ENSMUSG00000051951 ... ENSMUSG00000094621 ENSMUSG00000095742\n# rowData names(3): gene_id gene_name gene_biotype\n# colnames(6): day0-rep1 day0-rep2 ... day10-rep1 day10-rep2\n# colData names(3): sample sample_name group\n\nAlternatively, omicScope can directly parse the output files generated by FeatureCounts by setting the parameter featureCountOutput = TRUE:\n\n# Don't run\n# \n# os &lt;- omicscope(gtfAnno = \"../test-bam/Mus_musculus.GRCm38.102.gtf.gz\",\n#                 counts = \"featurecounts_output/counts.info.txt\",\n#                 featureCountOutput = TRUE,\n#                 metadata = mta)\n# os\n\nOnce the omicscope object is successfully created, users can proceed with downstream analyses including differential expression, pathway enrichment, and visualization.",
-    "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Raw counts example</span>"
-    ]
-  },
-  {
-    "objectID": "BamFiles-example.html#omicscope-object-construction",
-    "href": "BamFiles-example.html#omicscope-object-construction",
-    "title": "\n1  Bam files example\n",
-    "section": "\n1.2 Omicscope object construction",
-    "text": "1.2 Omicscope object construction\nIn the following example, we will construct an omicscope object using pre-aligned BAM files as input. In addition to the BAM files, sample metadata containing grouping information is required:\n\n# bam test\nlibrary(SummarizedExperiment)\nlibrary(omicScope)\n\nbams &lt;- list.files(\"../test-bam/\",pattern = \"*.bam$\")\nbams\n# [1] \"0a.bam\"         \"0a.sorted.bam\"  \"0b.bam\"         \"0b.sorted.bam\"  \"10a.bam\"        \"10a.sorted.bam\" \"10b.bam\"       \n# [8] \"10b.sorted.bam\" \"4a.bam\"         \"4a.sorted.bam\"  \"4b.bam\"         \"4b.sorted.bam\" \n\nbams &lt;- c(\"../test-bam/0a.sorted.bam\",\"../test-bam/0b.sorted.bam\",\n          \"../test-bam/4a.sorted.bam\",\"../test-bam/4b.sorted.bam\",\n          \"../test-bam/10a.sorted.bam\",\"../test-bam/10b.sorted.bam\")\n\n\nmta &lt;- data.frame(sample = bams,\n                  sample_name = c(\"day0-rep1\",\"day0-rep2\",\"day4-rep1\",\"day4-rep2\",\n                                  \"day10-rep1\",\"day10-rep2\"),\n                  group = rep(c(\"day0\",\"day4\",\"day10\"),each = 2))\nmta\n#                       sample sample_name group\n# 1  ../test-bam/0a.sorted.bam   day0-rep1  day0\n# 2  ../test-bam/0b.sorted.bam   day0-rep2  day0\n# 3  ../test-bam/4a.sorted.bam   day4-rep1  day4\n# 4  ../test-bam/4b.sorted.bam   day4-rep2  day4\n# 5 ../test-bam/10a.sorted.bam  day10-rep1 day10\n# 6 ../test-bam/10b.sorted.bam  day10-rep2 day10\n\nWe construct the omicscope object using the omicscope() function. The created object inherits from the SummarizedExperiment class, allowing users to access feature metadata and sample information using standard accessor functions like rowData() and colData(), respectively:\n\nos &lt;- omicscope(gtfAnno = \"../test-bam/Mus_musculus.GRCm38.102.gtf.gz\",\n                bamFile = bams,\n                metadata = mta)\nos\n# class: omicscope \n# dim: 55487 6 \n# metadata(0):\n#     assays(0):\n#     rownames(55487): ENSMUSG00000102693 ENSMUSG00000064842 ... ENSMUSG00000096730 ENSMUSG00000095742\n# rowData names(3): gene_id gene_name gene_biotype\n# colnames(6): ../test-bam/0a.sorted.bam ../test-bam/0b.sorted.bam ... ../test-bam/10a.sorted.bam ../test-bam/10b.sorted.bam\n# colData names(3): sample sample_name group\n\nrowData(os)\n# DataFrame with 55487 rows and 3 columns\n#                               gene_id      gene_name         gene_biotype\n#                           &lt;character&gt;    &lt;character&gt;          &lt;character&gt;\n# ENSMUSG00000102693 ENSMUSG00000102693  4933401J01Rik                  TEC\n# ENSMUSG00000064842 ENSMUSG00000064842        Gm26206                snRNA\n# ENSMUSG00000051951 ENSMUSG00000051951           Xkr4       protein_coding\n# ENSMUSG00000102851 ENSMUSG00000102851        Gm18956 processed_pseudogene\n# ENSMUSG00000103377 ENSMUSG00000103377        Gm37180                  TEC\n# ...                               ...            ...                  ...\n# ENSMUSG00000094431 ENSMUSG00000094431 CAAA01205117.1                miRNA\n# ENSMUSG00000094621 ENSMUSG00000094621 CAAA01098150.1                miRNA\n# ENSMUSG00000098647 ENSMUSG00000098647 CAAA01064564.1                miRNA\n# ENSMUSG00000096730 ENSMUSG00000096730       Vmn2r122       protein_coding\n# ENSMUSG00000095742 ENSMUSG00000095742 CAAA01147332.1       protein_coding\n\ncolData(os)\n# DataFrame with 6 rows and 3 columns\n#                                            sample sample_name       group\n#                                       &lt;character&gt; &lt;character&gt; &lt;character&gt;\n# ../test-bam/0a.sorted.bam  ../test-bam/0a.sorte..   day0-rep1        day0\n# ../test-bam/0b.sorted.bam  ../test-bam/0b.sorte..   day0-rep2        day0\n# ../test-bam/4a.sorted.bam  ../test-bam/4a.sorte..   day4-rep1        day4\n# ../test-bam/4b.sorted.bam  ../test-bam/4b.sorte..   day4-rep2        day4\n# ../test-bam/10a.sorted.bam ../test-bam/10a.sort..  day10-rep1       day10\n# ../test-bam/10b.sorted.bam ../test-bam/10b.sort..  day10-rep2       day10",
-    "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Bam files example</span>"
-    ]
-  },
-  {
-    "objectID": "UCSCzena-example.html#data-download",
-    "href": "UCSCzena-example.html#data-download",
-    "title": "\n3  UCSC xena example\n",
-    "section": "\n3.2 Data download",
-    "text": "3.2 Data download\nFor demonstration purposes, we use lung adenocarcinoma (LUAD) as a case study, downloading gene expression count matrices, clinical phenotype annotations, and survival outcome data from the UCSC Xena portal (https://xena.ucsc.edu/) to showcase OmicScope’s integrated analysis workflow:\n\n# Counts\nwget https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-LUAD.star_counts.tsv.gz\n\n# Phenotype data\nwget https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-LUAD.clinical.tsv.gz\n\n# Survival data\nwget https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-LUAD.survival.tsv.gz",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>UCSC xena example</span>"
     ]
