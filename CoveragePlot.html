@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.6.42">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Jun Zhang">
-<title>4&nbsp; Integration of GTEx normal tissue samples – omicScope</title>
+<title>7&nbsp; Coverage plot – omicScope</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,8 +61,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./TCGAbiolinks-integration.html" rel="next">
-<link href="./UCSCzena-example.html" rel="prev">
+<link href="./TME-analysis.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -106,7 +105,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./GTEX-samples-integration.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Integration of GTEx normal tissue samples</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./CoveragePlot.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Coverage plot</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -167,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./GTEX-samples-integration.html" class="sidebar-item-text sidebar-link active">
+  <a href="./GTEX-samples-integration.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Integration of GTEx normal tissue samples</span></span></a>
   </div>
 </li>
@@ -185,7 +184,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./CoveragePlot.html" class="sidebar-item-text sidebar-link">
+  <a href="./CoveragePlot.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Coverage plot</span></span></a>
   </div>
 </li>
@@ -197,17 +196,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">4.1</span> Introduction</a></li>
-  <li><a href="#gtex-read-counts-download" id="toc-gtex-read-counts-download" class="nav-link" data-scroll-target="#gtex-read-counts-download"><span class="header-section-number">4.2</span> GTEx read counts download</a></li>
-  <li><a href="#object-construction" id="toc-object-construction" class="nav-link" data-scroll-target="#object-construction"><span class="header-section-number">4.3</span> Object construction</a></li>
-  <li><a href="#data-normalization-and-reduction" id="toc-data-normalization-and-reduction" class="nav-link" data-scroll-target="#data-normalization-and-reduction"><span class="header-section-number">4.4</span> Data normalization and reduction</a></li>
-  <li><a href="#batch-effect-removal" id="toc-batch-effect-removal" class="nav-link" data-scroll-target="#batch-effect-removal"><span class="header-section-number">4.5</span> Batch effect removal</a></li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/junjunlab/omicScope/edit/main/GTEX-samples-integration.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/junjunlab/omicScope/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">7.1</span> Introduction</a></li>
+  <li><a href="#make-a-coverage-plot" id="toc-make-a-coverage-plot" class="nav-link" data-scroll-target="#make-a-coverage-plot"><span class="header-section-number">7.2</span> Make a coverage plot</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/junjunlab/omicScope/edit/main/CoveragePlot.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/junjunlab/omicScope/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Integration of GTEx normal tissue samples</span>
+<span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Coverage plot</span>
 </h1>
 </div>
 
@@ -222,110 +218,136 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="introduction" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="introduction">
-<span class="header-section-number">4.1</span> Introduction</h2>
-<p>TCGA datasets typically contain abundant tumor samples but relatively limited matched normal tissue samples. The <strong>GTEx</strong> database (<a href="https://www.gtexportal.org/home/" class="uri">https://www.gtexportal.org/home/</a>) provides extensive RNA-seq data from normal tissues across various organs. By integrating GTEx normal samples with TCGA tumor data, researchers can mitigate analytical biases arising from insufficient normal controls. OMICSCOPE facilitates this integration by directly incorporating user-downloaded GTEx count data, streamlining the analytical workflow.</p>
-</section><section id="gtex-read-counts-download" class="level2" data-number="4.2"><h2 data-number="4.2" class="anchored" data-anchor-id="gtex-read-counts-download">
-<span class="header-section-number">4.2</span> GTEx read counts download</h2>
-<p>Here, we downloaded normal lung tissue count data from the GTEx database, as TCGA-LUAD contains only 59 normal samples, which is relatively limited:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="image/gtex.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
+</header><section id="introduction" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="introduction">
+<span class="header-section-number">7.1</span> Introduction</h2>
+<p>The coverage_plot function in omicscope simplifies the creation of genomic coverage plots. Instead of the cumbersome process of converting BAM files to BigWig, this function works directly with your alignment files, saving you valuable time and effort. It produces crisp, publication-level graphics suitable for various sequencing applications. This makes it an essential tool not just for RNA-seq, but for anyone working with data from ATAC-seq, ChIP-seq, or CUT&amp;Tag experiments.</p>
+</section><section id="make-a-coverage-plot" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="make-a-coverage-plot">
+<span class="header-section-number">7.2</span> Make a coverage plot</h2>
+<p>Using aligned BAM files and a GTF annotation file, we can specify genes for visualization via the&nbsp;<code>target_gene</code>&nbsp;parameter. Here, we’ll examine the expression changes of the pluripotency gene&nbsp;<strong><em>Nanog</em></strong>&nbsp;and the housekeeping gene&nbsp;<strong><em>Actb</em></strong>&nbsp;on <strong>Day 0</strong> versus <strong>Day 10</strong> of stem cell differentiation:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://storage.googleapis.com/adult-gtex/bulk-gex/v10/rna-seq/counts-by-tissue/gene_reads_v10_lung.gct.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section><section id="object-construction" class="level2" data-number="4.3"><h2 data-number="4.3" class="anchored" data-anchor-id="object-construction">
-<span class="header-section-number">4.3</span> Object construction</h2>
-<p>We then build the omicscope object by providing the downloaded GTEx count data to the&nbsp;<code>gtex_counts_data</code>&nbsp;parameter:</p>
-<div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu">ucscZenaToObj</span><span class="op">(</span>gtf_anno <span class="op">=</span> <span class="st">"gencode.v36.annotation.gtf.gz"</span>,</span>
-<span>                     counts_data <span class="op">=</span> <span class="st">"TCGA-LUAD.star_counts.tsv.gz"</span>,</span>
-<span>                     pheno_data <span class="op">=</span> <span class="st">"TCGA-LUAD.clinical.tsv.gz"</span>,</span>
-<span>                     survival_data <span class="op">=</span> <span class="st">"TCGA-LUAD.survival.tsv.gz"</span>,</span>
-<span>                     gtex_counts_data <span class="op">=</span> <span class="st">"gene_reads_v10_lung.gct.gz"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">omicScope</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">obj</span></span>
-<span><span class="co"># class: omicscope </span></span>
-<span><span class="co"># dim: 52739 1193 </span></span>
-<span><span class="co"># metadata(0):</span></span>
-<span><span class="co"># assays(1): counts</span></span>
-<span><span class="co"># rownames(52739): ENSG00000223972.5 ENSG00000227232.5 ... ENSG00000210195.2 ENSG00000210196.2</span></span>
-<span><span class="co"># rowData names(3): gene_id gene_name gene_biotype</span></span>
-<span><span class="co"># colnames(1193): TCGA-38-7271-01A TCGA-55-7914-01A ... GTEX-ZZPT-1326-SM-5E43H GTEX-ZZPU-0526-SM-5E44U</span></span>
-<span><span class="co"># colData names(97): sample id ... X_PATIENT group2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section><section id="data-normalization-and-reduction" class="level2" data-number="4.4"><h2 data-number="4.4" class="anchored" data-anchor-id="data-normalization-and-reduction">
-<span class="header-section-number">4.4</span> Data normalization and reduction</h2>
-<p>The next critical step is to examine whether batch effects exist between the GTEx normal tissue samples and TCGA normal samples. If batch effects are present and left uncorrected, they may confound results and lead to erroneous conclusions in downstream analyses:</p>
-<div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu">normalize_data</span><span class="op">(</span><span class="va">obj</span>, norm_type <span class="op">=</span> <span class="st">"tpm"</span><span class="op">)</span></span>
+<span><span class="va">gtf</span> <span class="op">&lt;-</span> <span class="fu">rtracklayer</span><span class="fu">::</span><span class="fu">import</span><span class="op">(</span><span class="st">"../test-bam/Mus_musculus.GRCm38.102.gtf.gz"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu">run_reduction</span><span class="op">(</span>object <span class="op">=</span> <span class="va">obj</span>, </span>
-<span>                     reduction <span class="op">=</span> <span class="st">"pca"</span>,</span>
-<span>                     top_hvg_genes <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu">run_reduction</span><span class="op">(</span>object <span class="op">=</span> <span class="va">obj</span>, </span>
-<span>                     reduction <span class="op">=</span> <span class="st">"umap"</span>,</span>
-<span>                     top_hvg_genes <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu">run_reduction</span><span class="op">(</span>object <span class="op">=</span> <span class="va">obj</span>, </span>
-<span>                     reduction <span class="op">=</span> <span class="st">"tsne"</span>,</span>
-<span>                     top_hvg_genes <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">dim_plot</span><span class="op">(</span><span class="va">obj</span>, reduction <span class="op">=</span> <span class="st">"pca"</span>, color_by <span class="op">=</span> <span class="st">"group2"</span><span class="op">)</span></span>
-<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">dim_plot</span><span class="op">(</span><span class="va">obj</span>, reduction <span class="op">=</span> <span class="st">"umap"</span>, color_by <span class="op">=</span> <span class="st">"group2"</span><span class="op">)</span></span>
-<span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu">dim_plot</span><span class="op">(</span><span class="va">obj</span>, reduction <span class="op">=</span> <span class="st">"tsne"</span>, color_by <span class="op">=</span> <span class="st">"group2"</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html">plot_grid</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">p1</span>,<span class="va">p2</span>,<span class="va">p3</span><span class="op">)</span>,</span>
-<span>                   ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co"># test</span></span>
+<span><span class="fu">coverage_plot</span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span>,</span>
+<span>              <span class="va">sample_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"day0-rep1"</span>,<span class="st">"day0-rep2"</span>,<span class="st">"day10-rep1"</span>,<span class="st">"day10-rep2"</span><span class="op">)</span>,</span>
+<span>              gtf_file <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>              target_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Nanog"</span>,<span class="st">"Actb"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="image/gtex-reduc.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+<figure class="figure"><p><img src="image/c1.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
 </figure>
 </div>
-<p>Visualizations from all three dimensionality reduction approaches consistently reveal pronounced batch effects, with GTEx samples clearly segregating from patient-derived normal tissue samples.</p>
-</section><section id="batch-effect-removal" class="level2" data-number="4.5"><h2 data-number="4.5" class="anchored" data-anchor-id="batch-effect-removal">
-<span class="header-section-number">4.5</span> Batch effect removal</h2>
-<p>To address the observed batch effects, we employ the <strong>ComBat-seq</strong> method through the&nbsp;<code>correct_batch_effect</code>&nbsp;function. Note that batch correction will replace the original count matrix with adjusted values. After applying this correction, we perform dimensionality reduction analyses again to assess whether samples now cluster by biological characteristics rather than technical batch:</p>
+<p>In the bottom panel, the arrows on the gene structure indicate the <strong>direction of transcription</strong>. Arrows pointing to the right represent genes on the positive (+) strand, while those pointing to the left represent genes on the negative (-) strand.</p>
+<p>To simplify the y-axis and show only a range label instead of the full axis, set both the&nbsp;<code>add_range_label</code>&nbsp;and&nbsp;<code>remove_labelY</code>&nbsp;parameters to&nbsp;<code>TRUE</code>:</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu">correct_batch_effect</span><span class="op">(</span><span class="va">obj</span><span class="op">)</span></span>
-<span><span class="co"># Found 2 batches</span></span>
-<span><span class="co"># Using full model in ComBat-seq.</span></span>
-<span><span class="co"># Adjusting for 1 covariate(s) or covariate level(s)</span></span>
-<span><span class="co"># Estimating dispersions</span></span>
-<span><span class="co"># Fitting the GLM model</span></span>
-<span><span class="co"># Shrinkage off - using GLM estimates for parameters</span></span>
-<span><span class="co"># Adjusting the data</span></span>
-<span></span>
-<span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu">normalize_data</span><span class="op">(</span><span class="va">obj</span>, norm_type <span class="op">=</span> <span class="st">"tpm"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu">run_reduction</span><span class="op">(</span>object <span class="op">=</span> <span class="va">obj</span>, </span>
-<span>                     reduction <span class="op">=</span> <span class="st">"pca"</span>,</span>
-<span>                     top_hvg_genes <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu">run_reduction</span><span class="op">(</span>object <span class="op">=</span> <span class="va">obj</span>, </span>
-<span>                     reduction <span class="op">=</span> <span class="st">"umap"</span>,</span>
-<span>                     top_hvg_genes <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu">run_reduction</span><span class="op">(</span>object <span class="op">=</span> <span class="va">obj</span>, </span>
-<span>                     reduction <span class="op">=</span> <span class="st">"tsne"</span>,</span>
-<span>                     top_hvg_genes <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">dim_plot</span><span class="op">(</span><span class="va">obj</span>, reduction <span class="op">=</span> <span class="st">"pca"</span>, color_by <span class="op">=</span> <span class="st">"group2"</span><span class="op">)</span></span>
-<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">dim_plot</span><span class="op">(</span><span class="va">obj</span>, reduction <span class="op">=</span> <span class="st">"umap"</span>, color_by <span class="op">=</span> <span class="st">"group2"</span><span class="op">)</span></span>
-<span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu">dim_plot</span><span class="op">(</span><span class="va">obj</span>, reduction <span class="op">=</span> <span class="st">"tsne"</span>, color_by <span class="op">=</span> <span class="st">"group2"</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html">plot_grid</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">p1</span>,<span class="va">p2</span>,<span class="va">p3</span><span class="op">)</span>,</span>
-<span>                   ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">coverage_plot</span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span>,</span>
+<span>              <span class="va">sample_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"day0-rep1"</span>,<span class="st">"day0-rep2"</span>,<span class="st">"day10-rep1"</span>,<span class="st">"day10-rep2"</span><span class="op">)</span>,</span>
+<span>              gtf_file <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>              target_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Nanog"</span>,<span class="st">"Actb"</span><span class="op">)</span>,</span>
+<span>              add_range_label <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              remove_labelY <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="image/getx-combat.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+<figure class="figure"><p><img src="image/c2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
 </figure>
 </div>
-<p>With batch effects successfully corrected, users can now proceed with standard downstream analyses, including differential expression, pathway enrichment, and other routine procedures.</p>
+<p>Use the&nbsp;<code>sample_order</code>&nbsp;and&nbsp;<code>gene_order</code>&nbsp;parameters to reorder the samples and genes:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">coverage_plot</span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span>,</span>
+<span>              <span class="va">sample_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"day0-rep1"</span>,<span class="st">"day0-rep2"</span>,<span class="st">"day10-rep1"</span>,<span class="st">"day10-rep2"</span><span class="op">)</span>,</span>
+<span>              gtf_file <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>              target_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Nanog"</span>,<span class="st">"Actb"</span><span class="op">)</span>,</span>
+<span>              sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"day0-rep1"</span>,<span class="st">"day10-rep1"</span>,<span class="st">"day0-rep2"</span>,<span class="st">"day10-rep2"</span><span class="op">)</span>,</span>
+<span>              gene_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Actb"</span>,<span class="st">"Nanog"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/c3.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Use the&nbsp;<code>group_name</code>&nbsp;parameter to assign samples to groups. Setting&nbsp;<code>merge_group</code>&nbsp;to&nbsp;<code>TRUE</code>&nbsp;will then display the mean coverage across biological replicates for each group:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">coverage_plot</span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span>,</span>
+<span>              <span class="va">sample_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"day0-rep1"</span>,<span class="st">"day0-rep2"</span>,<span class="st">"day10-rep1"</span>,<span class="st">"day10-rep2"</span><span class="op">)</span>,</span>
+<span>              group_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Day-0"</span>,<span class="st">"Day-0"</span>,<span class="st">"Day-10"</span>,<span class="st">"Day-10"</span><span class="op">)</span>,</span>
+<span>              gtf_file <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>              target_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Nanog"</span>,<span class="st">"Actb"</span><span class="op">)</span>,</span>
+<span>              merge_group <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/c4.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Set&nbsp;<code>collapse_exon = TRUE</code>&nbsp;to collapse all of a gene’s transcripts for visualization:</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">coverage_plot</span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span>,</span>
+<span>              <span class="va">sample_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"day0-rep1"</span>,<span class="st">"day0-rep2"</span>,<span class="st">"day10-rep1"</span>,<span class="st">"day10-rep2"</span><span class="op">)</span>,</span>
+<span>              group_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Day-0"</span>,<span class="st">"Day-0"</span>,<span class="st">"Day-10"</span>,<span class="st">"Day-10"</span><span class="op">)</span>,</span>
+<span>              gtf_file <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>              target_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Nanog"</span>,<span class="st">"Actb"</span><span class="op">)</span>,</span>
+<span>              merge_group <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              collapse_exon <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              exon_linewidth <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/c5.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>If you want to make the gene structure panel at the bottom shorter, you can use the&nbsp;<code>theme_sub_panel</code>&nbsp;function:</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">coverage_plot</span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span>,</span>
+<span>              <span class="va">sample_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"day0-rep1"</span>,<span class="st">"day0-rep2"</span>,<span class="st">"day10-rep1"</span>,<span class="st">"day10-rep2"</span><span class="op">)</span>,</span>
+<span>              group_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Day-0"</span>,<span class="st">"Day-0"</span>,<span class="st">"Day-10"</span>,<span class="st">"Day-10"</span><span class="op">)</span>,</span>
+<span>              gtf_file <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>              target_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Nanog"</span>,<span class="st">"Actb"</span><span class="op">)</span>,</span>
+<span>              merge_group <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              collapse_exon <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              exon_linewidth <span class="op">=</span> <span class="fl">8</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/subtheme.html">theme_sub_panel</a></span><span class="op">(</span>heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">3</span>,<span class="fl">1</span><span class="op">)</span>,<span class="st">"cm"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/c6.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Modify colors using standard&nbsp;<code>ggplot2</code>&nbsp;syntax, or set them directly with the&nbsp;<code>exon_col</code>&nbsp;(for exons) and&nbsp;<code>arrow_col</code>&nbsp;(for intron lines) parameters:</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">coverage_plot</span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span>,</span>
+<span>              <span class="va">sample_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"day0-rep1"</span>,<span class="st">"day0-rep2"</span>,<span class="st">"day10-rep1"</span>,<span class="st">"day10-rep2"</span><span class="op">)</span>,</span>
+<span>              group_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Day-0"</span>,<span class="st">"Day-0"</span>,<span class="st">"Day-10"</span>,<span class="st">"Day-10"</span><span class="op">)</span>,</span>
+<span>              gtf_file <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>              target_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Nanog"</span>,<span class="st">"Actb"</span><span class="op">)</span>,</span>
+<span>              merge_group <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              exon_col <span class="op">=</span> <span class="st">"#05339C"</span>,arrow_col <span class="op">=</span> <span class="st">"#05339C"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Actb <span class="op">=</span> <span class="st">"#FAB12F"</span>,Nanog <span class="op">=</span> <span class="st">"#696FC7"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Actb <span class="op">=</span> <span class="st">"#FAB12F"</span>,Nanog <span class="op">=</span> <span class="st">"#696FC7"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/c7.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -745,14 +767,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./UCSCzena-example.html" class="pagination-link" aria-label="UCSC xena example">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">UCSC xena example</span></span>
+      <a href="./TME-analysis.html" class="pagination-link" aria-label="Tumor microenvironment analysis">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Tumor microenvironment analysis</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./TCGAbiolinks-integration.html" class="pagination-link" aria-label="Integration of TCGAbiolinks">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Integration of TCGAbiolinks</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -762,7 +781,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/junjunlab/omicScope/edit/main/GTEX-samples-integration.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/junjunlab/omicScope/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/junjunlab/omicScope/edit/main/CoveragePlot.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/junjunlab/omicScope/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
