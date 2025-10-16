@@ -198,6 +198,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
 <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">7.1</span> Introduction</a></li>
   <li><a href="#make-a-coverage-plot" id="toc-make-a-coverage-plot" class="nav-link" data-scroll-target="#make-a-coverage-plot"><span class="header-section-number">7.2</span> Make a coverage plot</a></li>
+  <li>
+<a href="#gene-plot" id="toc-gene-plot" class="nav-link" data-scroll-target="#gene-plot"><span class="header-section-number">7.3</span> Gene plot</a>
+  <ul class="collapse">
+<li><a href="#genomic-region-plot" id="toc-genomic-region-plot" class="nav-link" data-scroll-target="#genomic-region-plot"><span class="header-section-number">7.3.1</span> Genomic region plot</a></li>
+  </ul>
+</li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/junjunlab/omicScope/edit/main/CoveragePlot.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/junjunlab/omicScope/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -223,6 +229,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The coverage_plot function in omicscope simplifies the creation of genomic coverage plots. Instead of the cumbersome process of converting BAM files to BigWig, this function works directly with your alignment files, saving you valuable time and effort. It produces crisp, publication-level graphics suitable for various sequencing applications. This makes it an essential tool not just for RNA-seq, but for anyone working with data from ATAC-seq, ChIP-seq, or CUT&amp;Tag experiments.</p>
 </section><section id="make-a-coverage-plot" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="make-a-coverage-plot">
 <span class="header-section-number">7.2</span> Make a coverage plot</h2>
+</section><section id="gene-plot" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="gene-plot">
+<span class="header-section-number">7.3</span> Gene plot</h2>
 <p>Using aligned BAM files and a GTF annotation file, we can specify genes for visualization via the&nbsp;<code>target_gene</code>&nbsp;parameter. Here, we’ll examine the expression changes of the pluripotency gene&nbsp;<strong><em>Nanog</em></strong>&nbsp;and the housekeeping gene&nbsp;<strong><em>Actb</em></strong>&nbsp;on <strong>Day 0</strong> versus <strong>Day 10</strong> of stem cell differentiation:</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">omicScope</span><span class="op">)</span></span>
@@ -231,7 +239,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">gtf</span> <span class="op">&lt;-</span> <span class="fu">rtracklayer</span><span class="fu">::</span><span class="fu">import</span><span class="op">(</span><span class="st">"../test-bam/Mus_musculus.GRCm38.102.gtf.gz"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># test</span></span>
-<span><span class="fu">coverage_plot</span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/coverage_plot.html">coverage_plot</a></span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/10a.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span>,</span>
@@ -246,7 +254,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In the bottom panel, the arrows on the gene structure indicate the <strong>direction of transcription</strong>. Arrows pointing to the right represent genes on the positive (+) strand, while those pointing to the left represent genes on the negative (-) strand.</p>
 <p>To simplify the y-axis and show only a range label instead of the full axis, set both the&nbsp;<code>add_range_label</code>&nbsp;and&nbsp;<code>remove_labelY</code>&nbsp;parameters to&nbsp;<code>TRUE</code>:</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">coverage_plot</span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/coverage_plot.html">coverage_plot</a></span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/10a.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span>,</span>
@@ -262,7 +270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Use the&nbsp;<code>sample_order</code>&nbsp;and&nbsp;<code>gene_order</code>&nbsp;parameters to reorder the samples and genes:</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">coverage_plot</span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/coverage_plot.html">coverage_plot</a></span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/10a.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span>,</span>
@@ -278,7 +286,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Use the&nbsp;<code>group_name</code>&nbsp;parameter to assign samples to groups. Setting&nbsp;<code>merge_group</code>&nbsp;to&nbsp;<code>TRUE</code>&nbsp;will then display the mean coverage across biological replicates for each group:</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">coverage_plot</span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/coverage_plot.html">coverage_plot</a></span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/10a.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span>,</span>
@@ -294,7 +302,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Set&nbsp;<code>collapse_exon = TRUE</code>&nbsp;to collapse all of a gene’s transcripts for visualization:</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">coverage_plot</span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/coverage_plot.html">coverage_plot</a></span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/10a.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span>,</span>
@@ -312,7 +320,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>If you want to make the gene structure panel at the bottom shorter, you can use the&nbsp;<code>theme_sub_panel</code>&nbsp;function:</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">coverage_plot</span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/coverage_plot.html">coverage_plot</a></span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/10a.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span>,</span>
@@ -331,7 +339,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Modify colors using standard&nbsp;<code>ggplot2</code>&nbsp;syntax, or set them directly with the&nbsp;<code>exon_col</code>&nbsp;(for exons) and&nbsp;<code>arrow_col</code>&nbsp;(for intron lines) parameters:</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">coverage_plot</span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/coverage_plot.html">coverage_plot</a></span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/0b.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/10a.sorted.bam"</span>,</span>
 <span>                             <span class="st">"../test-bam/10b.sorted.bam"</span><span class="op">)</span>,</span>
@@ -348,9 +356,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figure class="figure"><p><img src="image/c7.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
 </figure>
 </div>
+<section id="genomic-region-plot" class="level3" data-number="7.3.1"><h3 data-number="7.3.1" class="anchored" data-anchor-id="genomic-region-plot">
+<span class="header-section-number">7.3.1</span> Genomic region plot</h3>
+<p>Besides plotting coverage for specific genes, the function also supports visualization of user-defined genomic regions. You can specify the&nbsp;<code>target_region</code>&nbsp;parameter with genomic coordinates in the format: <strong>chromosome:start_position-end_position</strong> (e.g., “chr1:1000000-2000000”):</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/coverage_plot.html">coverage_plot</a></span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10a.sorted.bam"</span><span class="op">)</span>,</span>
+<span>              <span class="va">sample_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"day0-rep1"</span>,<span class="st">"day10-rep1"</span><span class="op">)</span>,</span>
+<span>              gtf_file <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>              target_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1:127061844-128745904"</span>,</span>
+<span>                                <span class="st">"2:121127504-121354559"</span><span class="op">)</span></span>
+<span>              <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/r1.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>You can also set&nbsp;<code>add_gene_label = FALSE</code>&nbsp;to suppress gene name labeling:</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/coverage_plot.html">coverage_plot</a></span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10a.sorted.bam"</span><span class="op">)</span>,</span>
+<span>              <span class="va">sample_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"day0-rep1"</span>,<span class="st">"day10-rep1"</span><span class="op">)</span>,</span>
+<span>              gtf_file <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>              target_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1:127061844-128745904"</span>,</span>
+<span>                                <span class="st">"2:121127504-121354559"</span><span class="op">)</span>,</span>
+<span>              add_range_label <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              remove_labelY <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              add_gene_label <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/r2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Collapse all exons into a single track:</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/omicScope/man/coverage_plot.html">coverage_plot</a></span><span class="op">(</span><span class="va">bam_file</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"../test-bam/0a.sorted.bam"</span>,</span>
+<span>                             <span class="st">"../test-bam/10a.sorted.bam"</span><span class="op">)</span>,</span>
+<span>              <span class="va">sample_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"day0-rep1"</span>,<span class="st">"day10-rep1"</span><span class="op">)</span>,</span>
+<span>              gtf_file <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>              target_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1:127061844-128745904"</span>,</span>
+<span>                                <span class="st">"2:121127504-121354559"</span><span class="op">)</span>,</span>
+<span>              add_gene_label <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>              collapse_exon <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              exon_linewidth <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/r3.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
