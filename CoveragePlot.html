@@ -221,6 +221,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#highlight-specific-region" id="toc-highlight-specific-region" class="nav-link" data-scroll-target="#highlight-specific-region"><span class="header-section-number">7.4.3</span> Highlight specific region</a></li>
   </ul>
 </li>
+  <li>
+<a href="#implementation-with-signac" id="toc-implementation-with-signac" class="nav-link" data-scroll-target="#implementation-with-signac"><span class="header-section-number">7.5</span> Implementation with Signac</a>
+  <ul class="collapse">
+<li><a href="#basic-plot" id="toc-basic-plot" class="nav-link" data-scroll-target="#basic-plot"><span class="header-section-number">7.5.1</span> Basic plot</a></li>
+  <li><a href="#add-links-panel" id="toc-add-links-panel" class="nav-link" data-scroll-target="#add-links-panel"><span class="header-section-number">7.5.2</span> Add links panel</a></li>
+  <li><a href="#add-peaks-panel" id="toc-add-peaks-panel" class="nav-link" data-scroll-target="#add-peaks-panel"><span class="header-section-number">7.5.3</span> Add peaks panel</a></li>
+  </ul>
+</li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/junjunlab/omicScope/edit/main/CoveragePlot.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/junjunlab/omicScope/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -507,6 +515,179 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="image/hl2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section></section><section id="implementation-with-signac" class="level2" data-number="7.5"><h2 data-number="7.5" class="anchored" data-anchor-id="implementation-with-signac">
+<span class="header-section-number">7.5</span> Implementation with Signac</h2>
+<p>When analyzing single-cell epigenomic data such as scATAC-seq, packages like Signac have become a standard tool in the field. Building on its powerful foundation, we have developed an enhanced alternative to Signac’s <code>CoveragePlot</code> function. Our implementation, which generates plots like the <code>coverage_plot</code> shown previously, offers improved customizations and features.</p>
+<p>To begin, we assume you have a <code>SeuratObject</code> containing scATAC-seq data. The workflow for creating this object is detailed in the official <a href="https://stuartlab.org/signac/articles/pbmc_vignette">“Analyzing PBMC scATAC-seq”</a> tutorial, so we will not repeat it here. Let’s start by loading the required libraries and our sample data:</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">omicScope</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/stuart-lab/signac">Signac</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/single-cell-utils.R"</span>, package <span class="op">=</span> <span class="st">"omicScope"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load PBMC dataset</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"pbmc.rda"</span><span class="op">)</span></span>
+<span><span class="va">pbmc</span></span>
+<span><span class="co"># An object of class Seurat </span></span>
+<span><span class="co"># 185049 features across 9641 samples within 2 assays </span></span>
+<span><span class="co"># Active assay: peaks (165434 features, 165434 variable features)</span></span>
+<span><span class="co"># 2 layers present: counts, data</span></span>
+<span><span class="co"># 1 other assay present: RNA</span></span>
+<span><span class="co"># 2 dimensional reductions calculated: lsi, umap</span></span>
+<span></span>
+<span><span class="co"># load gtf file</span></span>
+<span><span class="va">hm</span> <span class="op">&lt;-</span> <span class="fu">rtracklayer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rtracklayer/man/GFFFile-class.html">import.gff</a></span><span class="op">(</span><span class="st">"gencode.v49.annotation.gtf.gz"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="basic-plot" class="level3" data-number="7.5.1"><h3 data-number="7.5.1" class="anchored" data-anchor-id="basic-plot">
+<span class="header-section-number">7.5.1</span> Basic plot</h3>
+<p>Let’s first visualize the data using Signac’s default plotting function:</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Signac/man/CoveragePlot.html">CoveragePlot</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">pbmc</span>,</span>
+<span>             region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CD8A"</span>,<span class="st">"CD4"</span><span class="op">)</span>,</span>
+<span>             extend.upstream <span class="op">=</span> <span class="fl">2000</span>,</span>
+<span>             extend.downstream <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/s1.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Now, let’s make a plot using&nbsp;<code>scCoverage_plot</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">scCoverage_plot</span><span class="op">(</span>object <span class="op">=</span> <span class="va">pbmc</span>,</span>
+<span>                gtf_file <span class="op">=</span> <span class="va">hm</span>,</span>
+<span>                target_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CD8A"</span>,<span class="st">"CD4"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/sc1.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Alternatively, you can specify a genomic region to plot:</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">scCoverage_plot</span><span class="op">(</span>object <span class="op">=</span> <span class="va">pbmc</span>,</span>
+<span>                gtf_file <span class="op">=</span> <span class="va">hm</span>,</span>
+<span>                target_region <span class="op">=</span> <span class="st">"chr2:86784605-86808396"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/sc2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="603"></p>
+</figure>
+</div>
+<p>Adding a new signal range label:</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">scCoverage_plot</span><span class="op">(</span>object <span class="op">=</span> <span class="va">pbmc</span>,</span>
+<span>                gtf_file <span class="op">=</span> <span class="va">hm</span>,</span>
+<span>                target_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CD4"</span>,<span class="st">"LYZ"</span><span class="op">)</span>,</span>
+<span>                add_range_label <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                remove_labelY <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                range_pos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.spacing.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">0</span>,<span class="st">"mm"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/sc3.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Visualizing multiple genes by collapsing different transcripts into a single gene model:</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">scCoverage_plot</span><span class="op">(</span>object <span class="op">=</span> <span class="va">pbmc</span>,</span>
+<span>                gtf_file <span class="op">=</span> <span class="va">hm</span>,</span>
+<span>                target_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'MS4A1'</span>, <span class="st">'CD3D'</span>, <span class="st">'LEF1'</span>,<span class="st">'TREM1'</span><span class="op">)</span>,</span>
+<span>                add_range_label <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                remove_labelY <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                range_pos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.8</span><span class="op">)</span>,</span>
+<span>                collapse_exon <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.spacing.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">0</span>,<span class="st">"mm"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/sc4.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="2783"></p>
+</figure>
+</div>
+</section><section id="add-links-panel" class="level3" data-number="7.5.2"><h3 data-number="7.5.2" class="anchored" data-anchor-id="add-links-panel">
+<span class="header-section-number">7.5.2</span> Add links panel</h3>
+<p>Link data is typically used for analyzing datasets such as Hi-C, co-accessibility, and enhancer-promoter interactions. For this example, we will randomly generate links between different sites within the CD8A gene for demonstration purposes. Please note that this data is purely illustrative and has no actual biological significance.</p>
+<p><strong>Important:</strong>&nbsp;When generating the&nbsp;<code>links_data</code>, the&nbsp;<code>seqnames</code>,&nbsp;<code>start</code>,&nbsp;<code>end</code>, and&nbsp;<code>sample</code>&nbsp;columns are required. Furthermore, if you are using the&nbsp;<code>target_gene</code>&nbsp;parameter, a corresponding&nbsp;<code>gene_name</code>&nbsp;column must be provided. Similarly, using the&nbsp;<code>target_region</code>&nbsp;parameter requires a&nbsp;<code>target_region</code>&nbsp;column:</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gfl</span> <span class="op">&lt;-</span> <span class="va">hm</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">gene_name</span> <span class="op">==</span> <span class="st">"CD8A"</span> <span class="op">&amp;</span> <span class="va">type</span> <span class="op">==</span> <span class="st">"gene"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">from</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">gfl</span><span class="op">$</span><span class="va">start</span><span class="op">:</span><span class="va">gfl</span><span class="op">$</span><span class="va">end</span>,<span class="fl">20</span>,replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">links</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>seqnames <span class="op">=</span> <span class="va">gfl</span><span class="op">$</span><span class="va">seqnames</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>                    start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">gfl</span><span class="op">$</span><span class="va">start</span><span class="op">:</span><span class="va">gfl</span><span class="op">$</span><span class="va">end</span>,<span class="fl">40</span>,replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
+<span>                    end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">gfl</span><span class="op">$</span><span class="va">start</span><span class="op">:</span><span class="va">gfl</span><span class="op">$</span><span class="va">end</span>,<span class="fl">40</span>,replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
+<span>                    score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0.01</span><span class="op">)</span>,<span class="fl">40</span>,replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
+<span>                    sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"links-1"</span>,<span class="st">"links-2"</span><span class="op">)</span>,<span class="fl">20</span><span class="op">)</span>,</span>
+<span>                    gene_name <span class="op">=</span> <span class="st">"CD8A"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">end</span> <span class="op">&gt;</span> <span class="va">start</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">links</span><span class="op">)</span></span>
+<span><span class="co">#   seqnames    start      end score  sample gene_name</span></span>
+<span><span class="co"># 1     chr2 86794131 86797385  0.56 links-1      CD8A</span></span>
+<span><span class="co"># 2     chr2 86795722 86803883  0.08 links-1      CD8A</span></span>
+<span><span class="co"># 3     chr2 86790482 86793071  0.35 links-2      CD8A</span></span>
+<span><span class="co"># 4     chr2 86804095 86808098  0.99 links-1      CD8A</span></span>
+<span><span class="co"># 5     chr2 86797230 86798150  0.92 links-2      CD8A</span></span>
+<span><span class="co"># 6     chr2 86786291 86799074  0.65 links-1      CD8A</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To visualize the links, pass the data you prepared to the&nbsp;<code>links_data</code>&nbsp;argument:</p>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">scCoverage_plot</span><span class="op">(</span>object <span class="op">=</span> <span class="va">pbmc</span>,</span>
+<span>                gtf_file <span class="op">=</span> <span class="va">hm</span>,</span>
+<span>                target_gene <span class="op">=</span> <span class="st">"CD8A"</span>,</span>
+<span>                links_data <span class="op">=</span> <span class="va">links</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/sc5.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section><section id="add-peaks-panel" class="level3" data-number="7.5.3"><h3 data-number="7.5.3" class="anchored" data-anchor-id="add-peaks-panel">
+<span class="header-section-number">7.5.3</span> Add peaks panel</h3>
+<p>Peaks data generally refers to DNA binding regions found by peak callers such as MACS2, although it can represent any genomic regions.</p>
+<p>For data preparation, your data frame must include the following columns: <code>seqnames</code>, <code>start</code>, <code>end</code>, and <code>sample</code>. Critically, every entry in the <code>sample</code> column must be the string <code>'Peaks'</code>. Additionally, you need a <code>sample_name</code> column to identify different samples. Please also note the conditional requirements: if you are using the <code>target_gene</code> parameter, a corresponding <code>gene_name</code> column must be provided. Similarly, using the <code>target_region</code> parameter requires a <code>target_region</code> column.</p>
+<p>Below, we will generate some random BED-formatted data to visualize this:</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">peaks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>seqnames <span class="op">=</span> <span class="va">gfl</span><span class="op">$</span><span class="va">seqnames</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>                    start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">gfl</span><span class="op">$</span><span class="va">start</span><span class="op">:</span><span class="va">gfl</span><span class="op">$</span><span class="va">end</span>,<span class="fl">40</span>,replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
+<span>                    end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">gfl</span><span class="op">$</span><span class="va">start</span><span class="op">:</span><span class="va">gfl</span><span class="op">$</span><span class="va">end</span>,<span class="fl">40</span>,replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
+<span>                    score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0.01</span><span class="op">)</span>,<span class="fl">40</span>,replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
+<span>                    sample <span class="op">=</span> <span class="st">"Peaks"</span>,</span>
+<span>                    sample_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"peaks-1"</span>,<span class="st">"peaks-2"</span><span class="op">)</span>,<span class="fl">20</span><span class="op">)</span>,</span>
+<span>                    gene_name <span class="op">=</span> <span class="st">"CD8A"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">end</span> <span class="op">&gt;</span> <span class="va">start</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">peaks</span><span class="op">)</span></span>
+<span><span class="co">#   seqnames    start      end score sample sample_name gene_name</span></span>
+<span><span class="co"># 1     chr2 86787803 86797842  0.42  Peaks     peaks-2      CD8A</span></span>
+<span><span class="co"># 2     chr2 86787870 86793469  0.72  Peaks     peaks-1      CD8A</span></span>
+<span><span class="co"># 3     chr2 86790426 86805815  0.92  Peaks     peaks-2      CD8A</span></span>
+<span><span class="co"># 4     chr2 86787409 86792736  0.02  Peaks     peaks-1      CD8A</span></span>
+<span><span class="co"># 5     chr2 86793777 86797484  1.00  Peaks     peaks-2      CD8A</span></span>
+<span><span class="co"># 6     chr2 86793063 86802052  0.29  Peaks     peaks-1      CD8A</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To visualize the peaks, pass your data to the&nbsp;<code>peaks_data</code>&nbsp;argument:</p>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">scCoverage_plot</span><span class="op">(</span>object <span class="op">=</span> <span class="va">pbmc</span>,</span>
+<span>                gtf_file <span class="op">=</span> <span class="va">hm</span>,</span>
+<span>                target_gene <span class="op">=</span> <span class="st">"CD8A"</span>,</span>
+<span>                peaks_data <span class="op">=</span> <span class="va">peaks</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/sc6.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Next, let’s visualize both the links and peaks data on the same plot:</p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">scCoverage_plot</span><span class="op">(</span>object <span class="op">=</span> <span class="va">pbmc</span>,</span>
+<span>                gtf_file <span class="op">=</span> <span class="va">hm</span>,</span>
+<span>                target_gene <span class="op">=</span> <span class="st">"CD8A"</span>,</span>
+<span>                links_data <span class="op">=</span> <span class="va">links</span>,</span>
+<span>                peaks_data <span class="op">=</span> <span class="va">peaks</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="image/sc7.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
 </figure>
 </div>
 
